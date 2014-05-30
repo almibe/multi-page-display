@@ -855,7 +855,7 @@ public class TabPaneSkinNew extends BehaviorSkinBase<TabPane, TabPaneBehavior> {
             headerClip.setHeight(clipHeight);
         }
 
-        
+        /* Start DnD Customization */
         private MouseEvent dragDetected;
         
         private void addTab(Tab tab, int addToIndex, boolean visible) {
