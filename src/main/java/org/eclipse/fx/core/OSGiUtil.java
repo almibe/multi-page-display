@@ -24,8 +24,8 @@ import org.osgi.framework.ServiceReference;
 
 class OSGiUtil {
     @SuppressWarnings("null")
-    public static <S> @NonNull List<@NonNull S> lookupServiceList(@Nullable Class<?> requestor,
-                                                                  @NonNull Class<S> serviceClass) {
+    public static <S> List<S> lookupServiceList(Class<?> requestor,
+                                                                  Class<S> serviceClass) {
         List<Class<?>> cl = new ArrayList<>();
         if (requestor != null) {
             cl.add(requestor);
@@ -73,7 +73,7 @@ class OSGiUtil {
         return ctx;
     }
 
-    static class CompareableService<@NonNull S> implements Comparable<CompareableService<S>> {
+    static class CompareableService<S> implements Comparable<CompareableService<S>> {
         private final ServiceReference<S> r;
         final S instance;
 

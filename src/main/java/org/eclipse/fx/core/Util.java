@@ -145,7 +145,6 @@ public class Util {
      */
     @SuppressWarnings("null")
     public static <S> Optional<S> getService(Class<S> serviceClass) {
-        @Nullable
         S v = _lookupService(null, serviceClass);
         if (v == null) {
             return Optional.empty();
@@ -167,7 +166,6 @@ public class Util {
      */
     @SuppressWarnings("null")
     public static <S> Optional<S> getService(Class<?> requestor, Class<S> serviceClass) {
-        @Nullable
         S v = _lookupService(requestor, serviceClass);
         if (v == null) {
             return Optional.empty();
