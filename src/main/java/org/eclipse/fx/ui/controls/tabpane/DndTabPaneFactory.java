@@ -10,14 +10,6 @@
  *******************************************************************************/
 package org.eclipse.fx.ui.controls.tabpane;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.eclipse.fx.ui.controls.dnd.EFXDragEvent;
-import org.eclipse.fx.ui.controls.markers.PositionMarker;
-import org.eclipse.fx.ui.controls.markers.TabOutlineMarker;
-import org.eclipse.fx.ui.controls.tabpane.skin.DnDTabPaneSkin;
-
 import javafx.event.Event;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
@@ -26,6 +18,13 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.eclipse.fx.ui.controls.dnd.EFXDragEvent;
+import org.eclipse.fx.ui.controls.markers.PositionMarker;
+import org.eclipse.fx.ui.controls.markers.TabOutlineMarker;
+import org.eclipse.fx.ui.controls.tabpane.skin.DnDTabPaneSkin;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Factory to create a tab pane who support DnD
@@ -320,7 +319,7 @@ public final class DndTabPaneFactory {
         /**
          * The tab dragged
          */
-        public final @NonNull GenericTab draggedTab;
+        public final GenericTab draggedTab;
         /**
          * The reference tab
          */
@@ -332,7 +331,7 @@ public final class DndTabPaneFactory {
         /**
          * The drop type
          */
-        public final @NonNull DropType dropType;
+        public final DropType dropType;
 
         /**
          * Create a feedback data
@@ -346,7 +345,7 @@ public final class DndTabPaneFactory {
          * @param dropType
          *            the drop type
          */
-        public FeedbackData(@NonNull GenericTab draggedTab, GenericTab targetTab, Bounds bounds, @NonNull DropType dropType) {
+        public FeedbackData(GenericTab draggedTab, GenericTab targetTab, Bounds bounds, DropType dropType) {
             this.draggedTab = draggedTab;
             this.targetTab = targetTab;
             this.bounds = bounds;
@@ -399,15 +398,15 @@ public final class DndTabPaneFactory {
         /**
          * The dragged tab
          */
-        public final @NonNull GenericTab draggedTab;
+        public final GenericTab draggedTab;
         /**
          * The reference tab
          */
-        public final @NonNull GenericTab targetTab;
+        public final GenericTab targetTab;
         /**
          * The drop type
          */
-        public final @NonNull DropType dropType;
+        public final DropType dropType;
 
         /**
          * The x coordinate relative to the screen
@@ -435,7 +434,7 @@ public final class DndTabPaneFactory {
          * @param dropType
          *            the drop type
          */
-        public DroppedData(double x, double y, @NonNull GenericTab draggedTab, @NonNull GenericTab targetTab, @NonNull DropType dropType) {
+        public DroppedData(double x, double y, GenericTab draggedTab, GenericTab targetTab, DropType dropType) {
             this.x = x;
             this.y = y;
             this.draggedTab = draggedTab;
@@ -454,7 +453,7 @@ public final class DndTabPaneFactory {
          * @param startFunction
          *            the function
          */
-        public void setStartFunction(@Nullable Function<@NonNull GenericTab, @NonNull Boolean> startFunction);
+        public void setStartFunction(Function<GenericTab, Boolean> startFunction);
 
         /**
          * Consumer called to handle the finishing of the drag process
@@ -462,7 +461,7 @@ public final class DndTabPaneFactory {
          * @param dragFinishedConsumer
          *            the consumer
          */
-        public void setDragFinishedConsumer(@Nullable Consumer<@NonNull GenericTab> dragFinishedConsumer);
+        public void setDragFinishedConsumer(Consumer<GenericTab> dragFinishedConsumer);
 
         /**
          * Consumer called to present drag feedback
@@ -470,7 +469,7 @@ public final class DndTabPaneFactory {
          * @param feedbackConsumer
          *            the consumer to call
          */
-        public void setFeedbackConsumer(@Nullable Consumer<@NonNull FeedbackData> feedbackConsumer);
+        public void setFeedbackConsumer(Consumer<FeedbackData> feedbackConsumer);
 
         /**
          * Consumer called when the drop has to be handled
@@ -478,7 +477,7 @@ public final class DndTabPaneFactory {
          * @param dropConsumer
          *            the consumer
          */
-        public void setDropConsumer(@Nullable Consumer<@NonNull DroppedData> dropConsumer);
+        public void setDropConsumer(Consumer<DroppedData> dropConsumer);
 
         /**
          * Function to translate the tab content into clipboard content
@@ -486,6 +485,6 @@ public final class DndTabPaneFactory {
          * @param clipboardDataFunction
          *            the function
          */
-        public void setClipboardDataFunction(@Nullable Function<@NonNull GenericTab, @NonNull String> clipboardDataFunction);
+        public void setClipboardDataFunction(Function<GenericTab, String> clipboardDataFunction);
     }
 }
