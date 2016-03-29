@@ -54,10 +54,10 @@ public final class AreaOverlay extends Region {
 		 */
 		BOTTOM
 	}
-	
+
 	/**
 	 * Create an area overlay
-	 * 
+	 *
 	 * @param leftRightRatio
 	 *            the ration used by the left and right areas
 	 */
@@ -76,10 +76,10 @@ public final class AreaOverlay extends Region {
 
 		this.bottom = new BorderPane(new Label("Bottom")); //$NON-NLS-1$
 		this.bottom.getStyleClass().addAll("bottom", "area");  //$NON-NLS-1$//$NON-NLS-2$
-		
+
 		getChildren().addAll(this.left, this.right, this.top, this.bottom);
 	}
-	
+
 	/**
 	 * Update the active area
 	 * @param area the active area
@@ -98,22 +98,22 @@ public final class AreaOverlay extends Region {
 		}
 		this.activeType = area;
 	}
-	
+
 	private Node getNodeForType(Area area) {
 		switch (area) {
-		case BOTTOM:
-			return this.bottom;
-		case LEFT:
-			return this.left;
-		case RIGHT:
-			return this.right;
-		case TOP:
-			return this.top;
-		default:
-			return null;
+			case BOTTOM:
+				return this.bottom;
+			case LEFT:
+				return this.left;
+			case RIGHT:
+				return this.right;
+			case TOP:
+				return this.top;
+			default:
+				return null;
 		}
 	}
-	
+
 	@Override
 	protected void layoutChildren() {
 		super.layoutChildren();
