@@ -10,29 +10,18 @@
  *******************************************************************************/
 package org.eclipse.fx.core.log;
 
-import org.eclipse.fx.core.Util;
-import org.eclipse.fx.core.internal.JUtilLoggerFactory;
+import org.eclipse.fx.core.RankedService;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
- * Allows to create a logger
- *
- * @since 1.2
+ * A factory service to create a logger instance
  */
-public class LoggerCreator {
+public interface LoggerFactory extends RankedService {
     /**
-     * Create a logger for the given class
-     *
-     * @param clazz
-     *            the clazz
-     * @return the logger created
+     * Create an instance of a logger
+     * @param name the name of the logger
+     * @return the logger instance
      */
-    @SuppressWarnings("null")
-    public static Logger createLogger(Class<?> clazz) {
-        LoggerFactory factory = Util.lookupService(LoggerFactory.class);
-
-        if(factory == null) {
-            factory = new JUtilLoggerFactory();
-        }
-        return factory.createLogger(clazz.getName());
-    }
+    @NonNull
+    public Logger createLogger(@NonNull String name);
 }

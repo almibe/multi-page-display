@@ -120,7 +120,7 @@ public final class ExExecutor {
      *            the message to use
      * @return the value provided by the supplier
      */
-    public static <@Nullable V> Optional<V> executeSupplier(ExSupplier<V> r, String message) {
+    public static <V> Optional<V> executeSupplier(ExSupplier<V> r, String message) {
         return executeSupplier(r, (e) -> wrap(e, message));
     }
 
@@ -137,7 +137,7 @@ public final class ExExecutor {
      *            function to convert checked exceptions into runtime exceptions
      * @return the value provided by the supplier
      */
-    public static <@Nullable V> Optional<V> executeSupplier(ExSupplier<V> r, Function<Throwable, RuntimeException> exceptionConverter) {
+    public static <V> Optional<V> executeSupplier(ExSupplier<V> r, Function<Throwable, RuntimeException> exceptionConverter) {
         try {
             return Optional.ofNullable(r.wrappedGet());
         } catch (Throwable e) {
@@ -159,7 +159,7 @@ public final class ExExecutor {
      *            the exception handler
      * @return the value
      */
-    public static <@Nullable V> Optional<V> executeSupplierOrDefault(ExSupplier<V> r, Function<Throwable, V> exceptionHandler) {
+    public static <V> Optional<V> executeSupplierOrDefault(ExSupplier<V> r, Function<Throwable, V> exceptionHandler) {
         try {
             return Optional.of(r.wrappedGet());
         } catch (Throwable t) {
@@ -182,7 +182,7 @@ public final class ExExecutor {
      * @param message
      *            the message to use
      */
-    public static <@Nullable T> void executeConsumer(T value, ExConsumer<T> r, String message) {
+    public static <T> void executeConsumer(T value, ExConsumer<T> r, String message) {
         executeConsumer(value, r, (e) -> wrap(e, message));
     }
 
@@ -200,7 +200,7 @@ public final class ExExecutor {
      * @param exceptionConverter
      *            function to convert checked exceptions into runtime exceptions
      */
-    public static <@Nullable T> void executeConsumer(T value, ExConsumer<T> r, Function<Throwable, RuntimeException> exceptionConverter) {
+    public static <T> void executeConsumer(T value, ExConsumer<T> r, Function<Throwable, RuntimeException> exceptionConverter) {
         try {
             r.wrappedAccept(value);
         } catch (Throwable e) {
@@ -228,7 +228,7 @@ public final class ExExecutor {
      *            the message to use
      * @return the return value of the function
      */
-    public static <@Nullable V, @Nullable R> Optional<R> executeFunction(V value, ExFunction<V, R> r, String message) {
+    public static <V, R> Optional<R> executeFunction(V value, ExFunction<V, R> r, String message) {
         return executeFunction(value, r, (e) -> wrap(e, message));
     }
 
@@ -243,7 +243,7 @@ public final class ExExecutor {
      *            handle an exception and return a value
      * @return the value returned by the function or the exception handler
      */
-    public static <@Nullable V, @Nullable R> Optional<R> executeFunctionOrDefault(V value, ExFunction<V, R> r, BiFunction<Throwable, V, R> exceptionHandler) {
+    public static <V, R> Optional<R> executeFunctionOrDefault(V value, ExFunction<V, R> r, BiFunction<Throwable, V, R> exceptionHandler) {
         try {
             return Optional.of(r.wrappedApply(value));
         } catch (Throwable t) {
@@ -266,7 +266,7 @@ public final class ExExecutor {
      *            function to convert checked exceptions into runtime exceptions
      * @return the return value of the function
      */
-    public static <@Nullable V, @Nullable R> Optional<R> executeFunction(V value, ExFunction<V, R> r, Function<Throwable, RuntimeException> exceptionConverter) {
+    public static <V, R> Optional<R> executeFunction(V value, ExFunction<V, R> r, Function<Throwable, RuntimeException> exceptionConverter) {
         try {
             return Optional.ofNullable(r.wrappedApply(value));
         } catch (Throwable e) {
