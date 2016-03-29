@@ -10,38 +10,23 @@
  *******************************************************************************/
 package org.eclipse.fx.core.internal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.jar.Manifest;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
 import org.eclipse.fx.core.RankedService;
 import org.eclipse.fx.core.Util;
 import org.eclipse.fx.core.function.ExExecutor;
-import org.eclipse.fx.core.internal.sm.Component;
-import org.eclipse.fx.core.internal.sm.Component11;
-import org.eclipse.fx.core.internal.sm.Component12;
+import org.eclipse.fx.core.internal.sm.*;
 import org.eclipse.fx.core.internal.sm.Properties;
-import org.eclipse.fx.core.internal.sm.Reference;
 import org.eclipse.fx.core.internal.sm.Reference.ReferenceCardinality;
-import org.eclipse.jdt.annotation.NonNull;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.jar.Manifest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implements parts of the OSGi-DS-Specification resolving services with it's
@@ -62,7 +47,7 @@ public class JavaDSServiceProcessor {
      *            the clazz
      * @return the list of services
      */
-    public synchronized static <S> @NonNull List<@NonNull S> lookupServiceList(Class<?> requestor, Class<S> clazz) {
+    public synchronized static <S> List<S> lookupServiceList(Class<?> requestor, Class<S> clazz) {
         if (INSTANCE == null) {
             INSTANCE = new JavaDSServiceProcessor();
         }
@@ -70,7 +55,7 @@ public class JavaDSServiceProcessor {
     }
 
     @SuppressWarnings({ "unchecked", "null" })
-    private synchronized <S> @NonNull List<@NonNull S> _lookupServiceList(Class<?> requestor, Class<S> clazz) {
+    private synchronized <S> List<S> _lookupServiceList(Class<?> requestor, Class<S> clazz) {
         List<?> list = this.serviceCache.get(clazz);
         if (list != null) {
             return (List<S>) list;
