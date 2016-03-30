@@ -13,6 +13,10 @@ public class DraggableTab extends Control {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
     private final StringProperty text = new SimpleStringProperty();
 
+    public DraggableTab(String title) {
+        text.setValue(title);
+    }
+
     @Override
     protected Skin<?> createDefaultSkin() {
         return new DraggableTabSkin(this);
@@ -38,7 +42,7 @@ public class DraggableTab extends Control {
         return text;
     }
 
-    public void setText(String text) {
-        this.text.set(text);
+    public void setText(String newValue) {
+        text.set(newValue);
     }
 }

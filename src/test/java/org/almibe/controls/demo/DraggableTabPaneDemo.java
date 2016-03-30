@@ -12,7 +12,7 @@ public class DraggableTabPaneDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        DraggableTab draggableTab = new DraggableTab();
+        DraggableTab draggableTab = new DraggableTab("Hello Demo");
 
         primaryStage.setScene(new Scene(draggableTab, 300, 250));
         primaryStage.show();
