@@ -13,8 +13,9 @@ public class DraggableTab extends Control {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
     private final StringProperty text = new SimpleStringProperty();
 
-    public DraggableTab(String title) {
+    public DraggableTab(String title, Node node) {
         text.setValue(title);
+        content.setValue(node);
     }
 
     @Override
