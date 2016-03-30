@@ -1,4 +1,12 @@
 package org.almibe.controls;
 
-public class DraggableTabPane {
+import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
+import org.almibe.controls.skins.DraggableTabPaneSkin;
+
+public class DraggableTabPane extends Control {
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new DraggableTabPaneSkin(this);
+    }
 }
