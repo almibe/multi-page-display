@@ -1,15 +1,20 @@
 package org.almibe.controls.skins;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
-import org.almibe.controls.DraggableTab;
+import javafx.scene.layout.HBox;
 import org.almibe.controls.DraggableTabPane;
 
 public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
-    private final ObservableList<DraggableTab> tabs = FXCollections.observableArrayList();
+
+    private final ScrollPane header = new ScrollPane();
+    private final HBox headerContent = new HBox();
 
     public DraggableTabPaneSkin(DraggableTabPane draggableTabPane) {
         super(draggableTabPane);
+        Bindings.bindContent(headerContent.getChildren(), draggableTabPane.getTabs());
+        header.contentProperty().setValue(headerContent);
+        this.getChildren().add(header);
     }
 }

@@ -20,9 +20,7 @@ public class DraggableTabSkin extends SkinBase<DraggableTab> {
         layout.setPadding(new Insets(10d));
         layout.setSpacing(10d);
         layout.setBorder(createBorder());
-        FlowPane region = new FlowPane();
-        region.getChildren().addAll(layout);
-        getChildren().add(region);
+        getChildren().add(layout);
     }
 
     private Border createBorder() {
