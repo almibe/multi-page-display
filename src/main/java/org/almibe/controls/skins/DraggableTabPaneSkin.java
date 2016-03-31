@@ -1,8 +1,6 @@
 package org.almibe.controls.skins;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
@@ -11,10 +9,9 @@ import javafx.scene.layout.HBox;
 import org.almibe.controls.DraggableTab;
 import org.almibe.controls.DraggableTabPane;
 
-public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
+import java.util.function.Function;
 
-    //private final ObservableObjectValue<Node> selectedScene; //TODO figure out how to set correctly
-    private final ObservableList<Node> headerControls = FXCollections.observableArrayList(); //TODO figure out how to set correctly
+public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
 
     private final ScrollPane header = new ScrollPane();
     private final HBox headerContent = new HBox();
@@ -24,26 +21,10 @@ public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
     public DraggableTabPaneSkin(DraggableTabPane draggableTabPane) {
         super(draggableTabPane);
 
-        //selectedScene = Bindings.select(draggableTabPane.selectedTabProperty(), "content");
-        draggableTabPane.getTabs().addListener((ListChangeListener<DraggableTab>) c -> {
-            while (c.next()) {
-                if (c.wasPermutated()) {
-                    for (int i = c.getFrom(); i < c.getTo(); ++i) {
+        Bindings.bindContent(headerContent.getChildren(), MappedList.map(draggableTabPane.getTabs(),
+            (Function <DraggableTab, Node>) draggableTab -> new DraggableTabSkin(draggableTab, this)));
 
-                    }
-                } else if (c.wasUpdated()) {
-
-                } else {
-                    for (DraggableTab remitem : c.getRemoved()) {
-
-                    }
-                    for (DraggableTab draggableTab : c.getAddedSubList()) {
-                        DraggableTabSkin skin = new DraggableTabSkin(draggableTab, this);
-                        headerContent.getChildren().add(skin);
-                    }
-                }
-            }
-        });
+        content.contentProperty().bind(Bindings.select(draggableTabPane.selectedTabProperty(), "content"));
 
         header.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         header.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
