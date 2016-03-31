@@ -10,14 +10,19 @@ import org.almibe.controls.DraggableTab;
 public class DraggableTabSkin extends HBox {
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
+    private final DraggableTabPaneSkin draggableTabPaneSkin;
 
-    public DraggableTabSkin(DraggableTab draggableTab) {
+    public DraggableTabSkin(DraggableTab draggableTab, DraggableTabPaneSkin draggableTabPaneSkin) {
         super();
+        this.draggableTabPaneSkin = draggableTabPaneSkin;
         text.textProperty().bind(draggableTab.textProperty());
         getChildren().addAll(text, closeButton);
         setPadding(new Insets(10d));
         setSpacing(10d);
         setBorder(createBorder());
+        this.setOnMouseClicked(event -> {
+            draggableTabPaneSkin.getSkinnable().setSelectedTab(draggableTab);
+        });
     }
 
     private Border createBorder() {

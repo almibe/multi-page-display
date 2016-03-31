@@ -38,7 +38,7 @@ public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
 
                     }
                     for (DraggableTab draggableTab : c.getAddedSubList()) {
-                        DraggableTabSkin skin = new DraggableTabSkin(draggableTab);
+                        DraggableTabSkin skin = new DraggableTabSkin(draggableTab, this);
                         headerContent.getChildren().add(skin);
                     }
                 }
