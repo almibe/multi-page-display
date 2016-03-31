@@ -3,24 +3,21 @@ package org.almibe.controls.skins;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SkinBase;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.almibe.controls.DraggableTab;
 
-public class DraggableTabSkin extends SkinBase<DraggableTab> {
+public class DraggableTabSkin extends HBox {
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
-    private final HBox layout = new HBox();
 
     public DraggableTabSkin(DraggableTab draggableTab) {
-        super(draggableTab);
+        super();
         text.textProperty().bind(draggableTab.textProperty());
-        layout.getChildren().addAll(text, closeButton);
-        layout.setPadding(new Insets(10d));
-        layout.setSpacing(10d);
-        layout.setBorder(createBorder());
-        getChildren().add(layout);
+        getChildren().addAll(text, closeButton);
+        setPadding(new Insets(10d));
+        setSpacing(10d);
+        setBorder(createBorder());
     }
 
     private Border createBorder() {
