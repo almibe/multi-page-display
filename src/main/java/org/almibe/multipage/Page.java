@@ -1,4 +1,4 @@
-package org.almibe.controls;
+package org.almibe.multipage;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -6,11 +6,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
-public class DraggableTab {
+public class Page {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
     private final StringProperty text = new SimpleStringProperty();
 
-    public DraggableTab(String title, Node node) {
+    public Page(String title, Node node) {
         text.setValue(title);
         content.setValue(node);
     }

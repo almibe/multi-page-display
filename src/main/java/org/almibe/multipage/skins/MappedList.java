@@ -24,7 +24,7 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package org.almibe.controls.skins;
+package org.almibe.multipage.skins;
 
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;

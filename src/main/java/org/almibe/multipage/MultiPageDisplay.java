@@ -1,4 +1,4 @@
-package org.almibe.controls;
+package org.almibe.multipage;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -6,31 +6,31 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
-import org.almibe.controls.skins.DraggableTabPaneSkin;
+import org.almibe.multipage.skins.MultiPageDisplaySkin;
 
-public class DraggableTabPane extends Control {
-    private final ObservableList<DraggableTab> tabs = FXCollections.observableArrayList();
+public class MultiPageDisplay extends Control {
+    private final ObservableList<Page> tabs = FXCollections.observableArrayList();
     //TODO maybe replace below with ObjectProperty<SingleSelectionModel<DraggableTab>> like TabPane uses?
-    private final ObjectProperty<DraggableTab> selectedTab = new SimpleObjectProperty<>();
+    private final ObjectProperty<Page> selectedTab = new SimpleObjectProperty<>();
 
     @Override
     protected Skin<?> createDefaultSkin() {
-        return new DraggableTabPaneSkin(this);
+        return new MultiPageDisplaySkin(this);
     }
 
-    public ObservableList<DraggableTab> getTabs() {
+    public ObservableList<Page> getTabs() {
         return tabs;
     }
 
-    public DraggableTab getSelectedTab() {
+    public Page getSelectedTab() {
         return selectedTab.get();
     }
 
-    public ObjectProperty<DraggableTab> selectedTabProperty() {
+    public ObjectProperty<Page> selectedTabProperty() {
         return selectedTab;
     }
 
-    public void setSelectedTab(DraggableTab selectedTab) {
+    public void setSelectedTab(Page selectedTab) {
         this.selectedTab.set(selectedTab);
     }
 }

@@ -1,4 +1,4 @@
-package org.almibe.controls.skins;
+package org.almibe.multipage.skins;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
@@ -7,12 +7,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import org.almibe.controls.DraggableTab;
-import org.almibe.controls.DraggableTabPane;
+import org.almibe.multipage.Page;
+import org.almibe.multipage.MultiPageDisplay;
 
 import java.util.function.Function;
 
-public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
+public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
     private final HBox tabArea = new HBox();
@@ -24,13 +24,13 @@ public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
 
-    public DraggableTabPaneSkin(DraggableTabPane draggableTabPane) {
-        super(draggableTabPane);
+    public MultiPageDisplaySkin(MultiPageDisplay multiPageDisplay) {
+        super(multiPageDisplay);
 
-        Bindings.bindContent(tabArea.getChildren(), MappedList.map(draggableTabPane.getTabs(),
-            (Function <DraggableTab, Node>) draggableTab -> new DraggableTabSkin(draggableTab, this)));
+        Bindings.bindContent(tabArea.getChildren(), MappedList.map(multiPageDisplay.getTabs(),
+            (Function <Page, Node>) draggableTab -> new PageTabSkin(draggableTab, this)));
 
-        content.contentProperty().bind(Bindings.select(draggableTabPane.selectedTabProperty(), "content"));
+        content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedTabProperty(), "content"));
 
         tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

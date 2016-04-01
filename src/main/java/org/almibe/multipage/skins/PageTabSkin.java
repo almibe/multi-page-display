@@ -1,27 +1,27 @@
-package org.almibe.controls.skins;
+package org.almibe.multipage.skins;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.almibe.controls.DraggableTab;
+import org.almibe.multipage.Page;
 
-public class DraggableTabSkin extends HBox {
+public class PageTabSkin extends HBox {
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
-    private final DraggableTabPaneSkin draggableTabPaneSkin;
+    private final MultiPageDisplaySkin multiPageDisplaySkin;
 
-    public DraggableTabSkin(DraggableTab draggableTab, DraggableTabPaneSkin draggableTabPaneSkin) {
+    public PageTabSkin(Page page, MultiPageDisplaySkin multiPageDisplaySkin) {
         super();
-        this.draggableTabPaneSkin = draggableTabPaneSkin;
-        text.textProperty().bind(draggableTab.textProperty());
+        this.multiPageDisplaySkin = multiPageDisplaySkin;
+        text.textProperty().bind(page.textProperty());
         getChildren().addAll(text, closeButton);
         setPadding(new Insets(10d));
         setSpacing(10d);
         setBorder(createBorder());
         this.setOnMouseClicked(event -> {
-            draggableTabPaneSkin.getSkinnable().setSelectedTab(draggableTab);
+            multiPageDisplaySkin.getSkinnable().setSelectedTab(page);
         });
     }
 
