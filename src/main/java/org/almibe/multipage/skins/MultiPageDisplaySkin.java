@@ -7,8 +7,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import org.almibe.multipage.Page;
 import org.almibe.multipage.MultiPageDisplay;
+import org.almibe.multipage.Page;
 
 import java.util.function.Function;
 
@@ -44,6 +44,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
         tabArea.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
         tabScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
+
+        addTabButton.setOnAction(event -> multiPageDisplay.getTabs().add(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
 
         this.getChildren().add(tabPane);
     }

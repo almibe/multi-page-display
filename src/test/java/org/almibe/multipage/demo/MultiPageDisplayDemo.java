@@ -15,7 +15,7 @@ public class MultiPageDisplayDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        MultiPageDisplay multiPageDisplay = new MultiPageDisplay();
+        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(() -> new Page("Hey", new Label("Hey Content")));
 
         primaryStage.setScene(new Scene(multiPageDisplay, 300, 250));
         primaryStage.show();

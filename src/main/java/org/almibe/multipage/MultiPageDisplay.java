@@ -12,6 +12,11 @@ public class MultiPageDisplay extends Control {
     private final ObservableList<Page> tabs = FXCollections.observableArrayList();
     //TODO maybe replace below with ObjectProperty<SingleSelectionModel<DraggableTab>> like TabPane uses?
     private final ObjectProperty<Page> selectedTab = new SimpleObjectProperty<>();
+    private final DefaultPageFactory defaultPageFactory;
+
+    public MultiPageDisplay(DefaultPageFactory defaultPageFactory) {
+        this.defaultPageFactory = defaultPageFactory;
+    }
 
     @Override
     protected Skin<?> createDefaultSkin() {
@@ -28,6 +33,10 @@ public class MultiPageDisplay extends Control {
 
     public ObjectProperty<Page> selectedTabProperty() {
         return selectedTab;
+    }
+
+    public DefaultPageFactory getDefaultPageFactory() {
+        return defaultPageFactory;
     }
 
     public void setSelectedTab(Page selectedTab) {
