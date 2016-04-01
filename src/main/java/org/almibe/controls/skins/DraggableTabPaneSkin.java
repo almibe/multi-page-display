@@ -2,6 +2,7 @@ package org.almibe.controls.skins;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +16,10 @@ public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
     private final HBox tabArea = new HBox();
-    private final HBox arrowsControls = new HBox();
+    private final Button addTabButton = new Button("+");
+    private final Button leftArrowButton = new Button("<");
+    private final Button rightArrowButton = new Button(">");
+    private final HBox arrowsControls = new HBox(leftArrowButton, rightArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
@@ -46,9 +50,21 @@ public class DraggableTabPaneSkin extends SkinBase<DraggableTabPane> {
 
     private void checkArrows() {
         if (tabArea.getWidth() > tabScrollPane.getWidth()) {
-            System.out.println("show arrowsControls");
+            if (!arrowsControls.getChildren().contains(leftArrowButton)) {
+                arrowsControls.getChildren().add(0,leftArrowButton);
+                arrowsControls.getChildren().add(1,rightArrowButton);
+                leftArrowButton.setVisible(true);
+                rightArrowButton.setVisible(true);
+                System.out.println("show arrowsControls");
+            }
         } else {
-            System.out.println("hide arrowsControls");
+            if (arrowsControls.getChildren().contains(leftArrowButton)) {
+                arrowsControls.getChildren().remove(leftArrowButton);
+                arrowsControls.getChildren().remove(rightArrowButton);
+                leftArrowButton.setVisible(false);
+                rightArrowButton.setVisible(false);
+                System.out.println("hide arrowsControls");
+            }
         }
     }
 }
