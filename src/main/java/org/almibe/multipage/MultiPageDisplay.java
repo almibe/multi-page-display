@@ -10,7 +10,6 @@ import org.almibe.multipage.skins.MultiPageDisplaySkin;
 
 public class MultiPageDisplay extends Control {
     private final ObservableList<Page> pages = FXCollections.observableArrayList();
-    //TODO maybe replace below with ObjectProperty<SingleSelectionModel<DraggableTab>> like TabPane uses?
     private final ObjectProperty<Page> selectedPage = new SimpleObjectProperty<>();
     private final DefaultPageFactory defaultPageFactory;
 
