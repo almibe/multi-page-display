@@ -8,5 +8,4 @@ Codewise this project's goal is to avoid all private sun.* &
 com.sun.* packages and usages of reflection to build a tab pane.
 
 This project is Licensed under the GPL v2 w/ Classpath Exception, the
-same license as the OpenJDK project.  And uses code from the EasyBind
-project licensed under the MIT license.
+same license as the OpenJDK project.

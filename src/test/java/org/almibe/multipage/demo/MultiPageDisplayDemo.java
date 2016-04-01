@@ -26,7 +26,8 @@ public class MultiPageDisplayDemo extends Application {
             Page page3 = new Page("Hello Demo!", new Label("Hello Demo Content!"));
             Page page4 = new Page("Hello Demo?!?!!", new Label("Hello Demo Content?!?!!"));
 
-            multiPageDisplay.getTabs().addAll(page, page2, page3, page4);
+            multiPageDisplay.getPages().addAll(page, page2, page3, page4);
+
         });
     }
 }

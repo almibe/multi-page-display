@@ -1,6 +1,8 @@
 package org.almibe.multipage.skins;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -10,7 +12,8 @@ import javafx.scene.layout.HBox;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
@@ -19,54 +22,101 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final Button addTabButton = new Button("+");
     private final Button leftArrowButton = new Button("<");
     private final Button rightArrowButton = new Button(">");
-    private final HBox arrowsControls = new HBox(leftArrowButton, rightArrowButton, addTabButton);
+    private final HBox arrowsControls = new HBox(leftArrowButton, rightArrowButton);
+    private final HBox buttonControls = new HBox(arrowsControls, addTabButton);
     private final BorderPane header = new BorderPane();
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
+    private final Map<Page, Node> pageNodeMap = new HashMap<>();
+
+    public MultiPageDisplay getMultiPageDisplay() {
+        return multiPageDisplay;
+    }
+
+    private final MultiPageDisplay multiPageDisplay;
 
     public MultiPageDisplaySkin(MultiPageDisplay multiPageDisplay) {
         super(multiPageDisplay);
+        this.multiPageDisplay = multiPageDisplay;
 
-        Bindings.bindContent(tabArea.getChildren(), MappedList.map(multiPageDisplay.getTabs(),
-            (Function <Page, Node>) draggableTab -> new PageTabSkin(draggableTab, this)));
+        start();
+    }
 
-        content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedTabProperty(), "content"));
+    public void start() {
+        Platform.runLater(() -> {
+            multiPageDisplay.getPages().addListener((ListChangeListener<? super Page>) c -> {
+                while (c.next()) {
+                    if (c.wasPermutated()) {
+                        //for (int i = c.getFrom(); i < c.getTo(); ++i) {
+                            System.out.println("permutate");
+                        //}
+                    } else if (c.wasUpdated()) {
+                        System.out.println("update");
+                    } else {
+                        for (Page remitem : c.getRemoved()) {
+                            Node node = pageNodeMap.remove(remitem);
+                            tabArea.getChildren().remove(node);
+                        }
+                        for (Page addedPage : c.getAddedSubList()) {
+                            Node node = new PageTabSkin(addedPage, this);
+                            pageNodeMap.put(addedPage, node);
+                            tabArea.getChildren().add(node);
+                        }
+                    }
+                }
+            });
 
-        tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        tabScrollPane.contentProperty().setValue(tabArea);
+            content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedTabProperty(), "content"));
 
-        header.setCenter(tabScrollPane);
-        header.setRight(arrowsControls);
+            tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            tabScrollPane.contentProperty().setValue(tabArea);
 
-        tabPane.setTop(header);
-        tabPane.setCenter(content);
+            header.setCenter(tabScrollPane);
+            header.setRight(buttonControls);
 
-        tabArea.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
-        tabScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
+            tabPane.setTop(header);
+            tabPane.setCenter(content);
 
-        addTabButton.setOnAction(event -> multiPageDisplay.getTabs().add(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
+            tabArea.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
+            tabScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
 
-        this.getChildren().add(tabPane);
+            addTabButton.setOnAction(event -> addPage());
+            rightArrowButton.setOnAction(event -> scrollRight());
+            leftArrowButton.setOnAction(event -> scrollLeft());
+
+            this.getChildren().add(tabPane);
+
+            checkArrows();
+        });
+
+    }
+
+    private void addPage() {
+        Platform.runLater(() -> multiPageDisplay.getPages().add(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
     }
 
     private void checkArrows() {
-        if (tabArea.getWidth() > tabScrollPane.getWidth()) {
-            if (!arrowsControls.getChildren().contains(leftArrowButton)) {
-                arrowsControls.getChildren().add(0,leftArrowButton);
-                arrowsControls.getChildren().add(1,rightArrowButton);
-                leftArrowButton.setVisible(true);
-                rightArrowButton.setVisible(true);
-                System.out.println("show arrowsControls");
+        Platform.runLater(() -> {
+            if (tabArea.getWidth() > tabScrollPane.getWidth() && !buttonControls.getChildren().contains(arrowsControls)) {
+                buttonControls.getChildren().add(0, arrowsControls);
+                return;
             }
-        } else {
-            if (arrowsControls.getChildren().contains(leftArrowButton)) {
-                arrowsControls.getChildren().remove(leftArrowButton);
-                arrowsControls.getChildren().remove(rightArrowButton);
-                leftArrowButton.setVisible(false);
-                rightArrowButton.setVisible(false);
-                System.out.println("hide arrowsControls");
+            if (tabArea.getWidth() - leftArrowButton.getWidth() - rightArrowButton.getWidth() < tabScrollPane.getWidth() && buttonControls.getChildren().contains(arrowsControls)) {
+                buttonControls.getChildren().remove(arrowsControls);
             }
-        }
+        });
+    }
+
+    private void scrollRight() {
+        Platform.runLater(() -> {
+            tabScrollPane.setHvalue(tabScrollPane.getHvalue() + tabScrollPane.getHmax() * .1);
+        });
+    }
+
+    private void scrollLeft() {
+        Platform.runLater(() -> {
+            tabScrollPane.setHvalue(tabScrollPane.getHvalue() - tabScrollPane.getHmax() * .1);
+        });
     }
 }

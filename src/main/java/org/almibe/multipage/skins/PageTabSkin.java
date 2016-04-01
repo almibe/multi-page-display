@@ -8,12 +8,14 @@ import javafx.scene.paint.Color;
 import org.almibe.multipage.Page;
 
 public class PageTabSkin extends HBox {
+    private final Page page;
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
     private final MultiPageDisplaySkin multiPageDisplaySkin;
 
     public PageTabSkin(Page page, MultiPageDisplaySkin multiPageDisplaySkin) {
         super();
+        this.page = page;
         this.multiPageDisplaySkin = multiPageDisplaySkin;
         text.textProperty().bind(page.textProperty());
         getChildren().addAll(text, closeButton);
@@ -23,6 +25,17 @@ public class PageTabSkin extends HBox {
         this.setOnMouseClicked(event -> {
             multiPageDisplaySkin.getSkinnable().setSelectedTab(page);
         });
+        closeButton.setOnAction(event -> multiPageDisplaySkin.getMultiPageDisplay().getPages().remove(page));
+        multiPageDisplaySkin.getSkinnable().selectedTabProperty().addListener((observable, oldValue, newValue) -> {
+            if (page == oldValue) {
+                this.backgroundProperty().setValue(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+            if (page == newValue) {
+                this.backgroundProperty().setValue(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        });
+        //TODO add dnd support
+
     }
 
     private Border createBorder() {
