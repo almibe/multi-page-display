@@ -60,6 +60,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                                 int index = tabArea.getChildren().indexOf(node);
                                 if (multiPageDisplay.getPages().size() == 0) {
                                     tabPane.setCenter(new Pane());
+                                } else if (index == 0) {
+                                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index));
                                 } else {
                                     multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
                                 }
