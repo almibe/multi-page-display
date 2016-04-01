@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 
@@ -55,12 +56,22 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                     } else {
                         for (Page remitem : c.getRemoved()) {
                             Node node = pageNodeMap.remove(remitem);
+                            if (multiPageDisplay.getSelectedTab() == remitem) {
+                                int index = tabArea.getChildren().indexOf(node);
+                                if (multiPageDisplay.getPages().size() == 0) {
+                                    tabPane.setCenter(new Pane());
+                                } else {
+                                    multiPageDisplay.setSelectedTab(multiPageDisplay.getPages().get(index - 1));
+                                }
+                            }
                             tabArea.getChildren().remove(node);
                         }
                         for (Page addedPage : c.getAddedSubList()) {
                             Node node = new PageTabSkin(addedPage, this);
                             pageNodeMap.put(addedPage, node);
                             tabArea.getChildren().add(node);
+                            multiPageDisplay.setSelectedTab(addedPage);
+                            tabPane.setCenter(content);
                         }
                     }
                 }
