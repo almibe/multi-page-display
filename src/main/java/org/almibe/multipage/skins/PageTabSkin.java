@@ -23,10 +23,10 @@ public class PageTabSkin extends HBox {
         setSpacing(10d);
         setBorder(createBorder());
         this.setOnMouseClicked(event -> {
-            multiPageDisplaySkin.getSkinnable().setSelectedTab(page);
+            multiPageDisplaySkin.getSkinnable().setSelectedPage(page);
         });
         closeButton.setOnAction(event -> multiPageDisplaySkin.getMultiPageDisplay().getPages().remove(page));
-        multiPageDisplaySkin.getSkinnable().selectedTabProperty().addListener((observable, oldValue, newValue) -> {
+        multiPageDisplaySkin.getSkinnable().selectedPageProperty().addListener((observable, oldValue, newValue) -> {
             if (page == oldValue) {
                 this.backgroundProperty().setValue(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
             }

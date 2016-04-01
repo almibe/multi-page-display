@@ -56,12 +56,12 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                     } else {
                         for (Page remitem : c.getRemoved()) {
                             Node node = pageNodeMap.remove(remitem);
-                            if (multiPageDisplay.getSelectedTab() == remitem) {
+                            if (multiPageDisplay.getSelectedPage() == remitem) {
                                 int index = tabArea.getChildren().indexOf(node);
                                 if (multiPageDisplay.getPages().size() == 0) {
                                     tabPane.setCenter(new Pane());
                                 } else {
-                                    multiPageDisplay.setSelectedTab(multiPageDisplay.getPages().get(index - 1));
+                                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
                                 }
                             }
                             tabArea.getChildren().remove(node);
@@ -70,14 +70,14 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                             Node node = new PageTabSkin(addedPage, this);
                             pageNodeMap.put(addedPage, node);
                             tabArea.getChildren().add(node);
-                            multiPageDisplay.setSelectedTab(addedPage);
+                            multiPageDisplay.setSelectedPage(addedPage);
                             tabPane.setCenter(content);
                         }
                     }
                 }
             });
 
-            content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedTabProperty(), "content"));
+            content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedPageProperty(), "content"));
 
             tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
