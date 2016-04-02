@@ -3,10 +3,14 @@ package org.almibe.multipage.demo;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.almibe.multipage.Page;
 import org.almibe.multipage.MultiPageDisplay;
+import org.almibe.multipage.Page;
+
+import java.util.Optional;
 
 public class MultiPageDisplayDemo extends Application {
     public static void main(String[] args) {
@@ -25,9 +29,17 @@ public class MultiPageDisplayDemo extends Application {
             Page page2 = new Page("Hello Demo?", new Label("Hello Demo Content?"));
             Page page3 = new Page("Hello Demo!", new Label("Hello Demo Content!"));
             Page page4 = new Page("Hello Demo?!?!!", new Label("Hello Demo Content?!?!!"));
+            Page page5 = new Page("Prompt to close", new Label("Click yes to close"), event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Close Tab?");
+                alert.setHeaderText("Do you want to close this tab?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() != ButtonType.OK){
+                    event.consume();
+                }
+            });
 
-            multiPageDisplay.getPages().addAll(page, page2, page3, page4);
-
+            multiPageDisplay.getPages().addAll(page, page2, page3, page4, page5);
         });
     }
 }

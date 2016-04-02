@@ -107,6 +107,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             checkArrows();
         });
 
+        //TODO add keyboard shortcuts for tabPane
     }
 
     private void addPage() {
