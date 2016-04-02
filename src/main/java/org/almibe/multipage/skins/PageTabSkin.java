@@ -44,12 +44,14 @@ public class PageTabSkin extends HBox {
                 this.backgroundProperty().setValue(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
-        //TODO add dnd support
-
     }
 
     private Border createBorder() {
         return new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
             new CornerRadii(10d, 10d, 0d, 0d, false), BorderWidths.DEFAULT));
+    }
+
+    public Page getPage() {
+        return page;
     }
 }

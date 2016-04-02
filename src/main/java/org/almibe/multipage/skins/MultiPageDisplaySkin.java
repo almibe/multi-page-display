@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,6 +31,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
     private final Map<Page, Node> pageNodeMap = new HashMap<>();
+    private MouseEvent dragDetected;
 
     public MultiPageDisplay getMultiPageDisplay() {
         return multiPageDisplay;
@@ -69,11 +72,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                             tabArea.getChildren().remove(node);
                         }
                         for (Page addedPage : c.getAddedSubList()) {
-                            Node node = new PageTabSkin(addedPage, this);
-                            pageNodeMap.put(addedPage, node);
-                            tabArea.getChildren().add(node);
-                            multiPageDisplay.setSelectedPage(addedPage);
-                            tabPane.setCenter(content);
+                            addPageNode(addedPage);
                         }
                     }
                 }
@@ -110,6 +109,49 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         //TODO add keyboard shortcuts for tabPane
     }
 
+    private void addPageNode(Page addedPage) {
+        Node node = new PageTabSkin(addedPage, this);
+        pageNodeMap.put(addedPage, node);
+        tabArea.getChildren().add(node);
+        multiPageDisplay.setSelectedPage(addedPage);
+        tabPane.setCenter(content);
+        //TODO add DnD support
+        node.setOnMouseReleased(event -> event.consume());
+        node.setOnDragDetected(event -> {
+            node.startFullDrag();
+            dragDetected = event;
+            event.consume();
+        });
+        node.setOnMouseDragged(event -> event.consume());
+        node.setOnMouseDragEntered(event -> {
+            //TODO finish this method
+            PageTabSkin sourcePageTabSkin = ((PageTabSkin)event.getGestureSource());
+            PageTabSkin targetPageTabSkin = ((PageTabSkin)event.getTarget());
+            Page sourcePage = sourcePageTabSkin.getPage();
+            Page targetPage = targetPageTabSkin.getPage();
+            if (sourcePage == targetPage) return;
+            int sourceIndex = multiPageDisplay.getPages().indexOf(sourcePage);
+            int targetIndex = multiPageDisplay.getPages().indexOf(targetPage);
+
+            if (sourceIndex > targetIndex) {
+                multiPageDisplay.getPages().remove(sourcePage);
+                multiPageDisplay.getPages().add(targetIndex, sourcePage);
+                multiPageDisplay.setSelectedPage(sourcePage);
+                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected); //TODO is there a better way to handle this?
+            } else {
+                for(int i = sourceIndex+1; i-1 < targetIndex; i++) {
+                    Page removedPage = multiPageDisplay.getPages().remove(i);
+                    multiPageDisplay.getPages().add(i-1, removedPage);
+                }
+                multiPageDisplay.setSelectedPage(sourcePage);
+                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected); //TODO is there a better way to handle this?
+            }
+            node.setMouseTransparent(false);
+            event.consume();
+        });
+        node.setOnMouseDragReleased(event -> event.consume());
+    }
+
     private void addPage() {
         Platform.runLater(() -> multiPageDisplay.getPages().add(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
     }
@@ -127,14 +169,16 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     }
 
     private void scrollRight() {
+        double scrollAmount = 500d/tabArea.widthProperty().doubleValue();
         Platform.runLater(() -> {
-            tabScrollPane.setHvalue(tabScrollPane.getHvalue() + tabScrollPane.getHmax() * .1);
+            tabScrollPane.setHvalue(tabScrollPane.getHvalue() + scrollAmount);
         });
     }
 
     private void scrollLeft() {
+        double scrollAmount = 500d/tabArea.widthProperty().doubleValue();
         Platform.runLater(() -> {
-            tabScrollPane.setHvalue(tabScrollPane.getHvalue() - tabScrollPane.getHmax() * .1);
+            tabScrollPane.setHvalue(tabScrollPane.getHvalue() - scrollAmount);
         });
     }
 }

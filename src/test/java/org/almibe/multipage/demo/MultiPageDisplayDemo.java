@@ -25,10 +25,10 @@ public class MultiPageDisplayDemo extends Application {
         primaryStage.show();
 
         Platform.runLater(() -> {
-            Page page = new Page("Hello Demo", new Label("Hello Demo Content"));
-            Page page2 = new Page("Hello Demo?", new Label("Hello Demo Content?"));
-            Page page3 = new Page("Hello Demo!", new Label("Hello Demo Content!"));
-            Page page4 = new Page("Hello Demo?!?!!", new Label("Hello Demo Content?!?!!"));
+            Page page = new Page("Hello Demo 1", new Label("Hello Demo Content"));
+            Page page2 = new Page("Hello Demo 2", new Label("Hello Demo Content?"));
+            Page page3 = new Page("Hello Demo 3", new Label("Hello Demo Content!"));
+            Page page4 = new Page("Hello Demo 4", new Label("Hello Demo Content?!?!!"));
             Page page5 = new Page("Prompt to close", new Label("Click yes to close"), event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Close Tab?");
