@@ -81,6 +81,10 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
             content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedPageProperty(), "content"));
 
+            content.contentProperty().addListener((observable, oldValue, newValue) -> {
+                Platform.runLater(() -> content.requestFocus());
+            });
+
             tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.contentProperty().setValue(tabArea);
