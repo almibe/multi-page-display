@@ -7,13 +7,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.almibe.multipage.Page;
 
-public class PageTabSkin extends HBox {
+public class PageTabNode extends HBox {
     private final Page page;
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
     private final MultiPageDisplaySkin multiPageDisplaySkin;
 
-    public PageTabSkin(Page page, MultiPageDisplaySkin multiPageDisplaySkin) {
+    public PageTabNode(Page page, MultiPageDisplaySkin multiPageDisplaySkin) {
         super();
         this.page = page;
         this.multiPageDisplaySkin = multiPageDisplaySkin;
