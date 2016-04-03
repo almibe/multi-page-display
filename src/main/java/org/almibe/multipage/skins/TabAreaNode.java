@@ -35,7 +35,6 @@ public class TabAreaNode extends HBox {
         getChildren().add(node);
         selectedPage.setValue(page);
         tabPane.setCenter(page.getContent());
-        //TODO add DnD support
         node.setOnMouseReleased(event -> event.consume());
         node.setOnDragDetected(event -> {
             node.startFullDrag();
