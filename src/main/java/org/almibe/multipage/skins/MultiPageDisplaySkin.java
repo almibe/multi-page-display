@@ -3,9 +3,10 @@ package org.almibe.multipage.skins;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyListProperty;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import org.almibe.multipage.MultiPageDisplay;
@@ -14,9 +15,9 @@ import org.almibe.multipage.Page;
 public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
-    private final Button addTabButton = new Button("+");
-    private final Button leftArrowButton = new Button("<");
-    private final Button rightArrowButton = new Button(">");
+    private final ImageView addTabButton = new ImageView(new Image(getClass().getResourceAsStream("tango/list-add32.png")));
+    private final ImageView leftArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-previous32.png")));
+    private final ImageView rightArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-next32.png")));
     private final HBox arrowsControls = new HBox(leftArrowButton, rightArrowButton);
     private final HBox buttonControls = new HBox(arrowsControls, addTabButton);
     private final BorderPane header = new BorderPane();
@@ -49,6 +50,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.contentProperty().setValue(tabArea);
 
+            tabScrollPane.setStyle("-fx-background: rgb(200,200,200);");
+
             header.setCenter(tabScrollPane);
             header.setRight(buttonControls);
 
@@ -58,9 +61,9 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             tabArea.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
             tabScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
 
-            addTabButton.setOnAction(event -> addPage());
-            rightArrowButton.setOnAction(event -> scrollRight());
-            leftArrowButton.setOnAction(event -> scrollLeft());
+            addTabButton.setOnMouseClicked(event -> addPage());
+            rightArrowButton.setOnMouseClicked(event -> scrollRight());
+            leftArrowButton.setOnMouseClicked(event -> scrollLeft());
 
             this.getChildren().add(tabPane);
 
@@ -90,7 +93,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                 buttonControls.getChildren().add(0, arrowsControls);
                 return;
             }
-            if (tabArea.getWidth() - leftArrowButton.getWidth() - rightArrowButton.getWidth() < tabScrollPane.getWidth() && buttonControls.getChildren().contains(arrowsControls)) {
+            if (tabArea.getWidth() - leftArrowButton.getImage().getWidth() - rightArrowButton.getImage().getWidth() < tabScrollPane.getWidth() && buttonControls.getChildren().contains(arrowsControls)) {
                 buttonControls.getChildren().remove(arrowsControls);
             }
         });
