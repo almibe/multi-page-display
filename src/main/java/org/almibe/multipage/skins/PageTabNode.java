@@ -1,5 +1,6 @@
 package org.almibe.multipage.skins;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,19 +12,19 @@ public class PageTabNode extends HBox {
     private final Page page;
     private final Label text = new Label();
     private final Button closeButton = new Button("X");
-    private final MultiPageDisplaySkin multiPageDisplaySkin;
+    private final ObjectProperty<Page> selectedPage;
 
-    public PageTabNode(Page page, MultiPageDisplaySkin multiPageDisplaySkin) {
+    public PageTabNode(Page page, ObjectProperty<Page> selectedPage, TabAreaNode tabAreaNode) {
         super();
         this.page = page;
-        this.multiPageDisplaySkin = multiPageDisplaySkin;
+        this.selectedPage = selectedPage;
         text.textProperty().bind(page.textProperty());
         getChildren().addAll(text, closeButton);
         setPadding(new Insets(10d));
         setSpacing(10d);
         setBorder(createBorder());
         this.setOnMouseClicked(event -> {
-            multiPageDisplaySkin.getSkinnable().setSelectedPage(page);
+            this.selectedPage.set(page);
         });
 
         closeButton.setOnAction(event -> {
@@ -33,10 +34,10 @@ public class PageTabNode extends HBox {
                     return;
                 }
             }
-            multiPageDisplaySkin.getMultiPageDisplay().getPages().remove(page);
+            tabAreaNode.removePage(page);
         });
 
-        multiPageDisplaySkin.getSkinnable().selectedPageProperty().addListener((observable, oldValue, newValue) -> {
+        selectedPage.addListener((observable, oldValue, newValue) -> {
             if (page == oldValue) {
                 this.backgroundProperty().setValue(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
             }
