@@ -6,7 +6,6 @@ import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -57,8 +56,9 @@ public class TabAreaNode extends HBox {
                 removePage(sourcePage);
                 pages.add(targetIndex, sourcePage);
                 getChildren().add(targetIndex, sourcePageTabNode);
+                pageNodeMap.put(sourcePage, sourcePageTabNode);
                 selectedPage.setValue(sourcePage);
-                MouseDragEvent.fireEvent(sourcePageTabNode,dragDetected);
+                //MouseDragEvent.fireEvent(sourcePageTabNode,dragDetected);
             } else {
                 for(int i = sourceIndex+1; i-1 < targetIndex; i++) {
                     Page removedPage = pages.remove(i);
@@ -69,7 +69,7 @@ public class TabAreaNode extends HBox {
                     getChildren().add(i-1, pageNode);
                 }
                 selectedPage.setValue(sourcePage);
-                MouseDragEvent.fireEvent(sourcePageTabNode,dragDetected);
+                //MouseDragEvent.fireEvent(sourcePageTabNode,dragDetected);
             }
             node.setMouseTransparent(false);
             event.consume();
