@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class MultiPageDisplayDemo extends Application {
@@ -39,7 +40,7 @@ public class MultiPageDisplayDemo extends Application {
                 }
             });
 
-            multiPageDisplay.getPages().addAll(page, page2, page3, page4, page5);
+            Arrays.asList(page, page2, page3, page4, page5).forEach(it -> multiPageDisplay.addPage(it));
         });
     }
 }

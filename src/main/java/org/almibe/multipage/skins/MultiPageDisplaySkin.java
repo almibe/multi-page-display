@@ -2,7 +2,10 @@ package org.almibe.multipage.skins;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ListChangeListener;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -30,6 +33,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final BorderPane header = new BorderPane();
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
+    private final ObservableList<Page> pages = FXCollections.observableArrayList();
     private final Map<Page, Node> pageNodeMap = new HashMap<>();
     private MouseEvent dragDetected;
 
@@ -48,36 +52,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     public void start() {
         Platform.runLater(() -> {
-            multiPageDisplay.getPages().addListener((ListChangeListener<? super Page>) c -> {
-                while (c.next()) {
-                    if (c.wasPermutated()) {
-                        //for (int i = c.getFrom(); i < c.getTo(); ++i) {
-                            System.out.println("permutate");
-                        //}
-                    } else if (c.wasUpdated()) {
-                        System.out.println("update");
-                    } else {
-                        for (Page remitem : c.getRemoved()) {
-                            Node node = pageNodeMap.remove(remitem);
-                            if (multiPageDisplay.getSelectedPage() == remitem) {
-                                int index = tabArea.getChildren().indexOf(node);
-                                if (multiPageDisplay.getPages().size() == 0) {
-                                    tabPane.setCenter(new Pane());
-                                } else if (index == 0) {
-                                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index));
-                                } else {
-                                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
-                                }
-                            }
-                            tabArea.getChildren().remove(node);
-                        }
-                        for (Page addedPage : c.getAddedSubList()) {
-                            addPageNode(addedPage);
-                        }
-                    }
-                }
-            });
-
             content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedPageProperty(), "content"));
 
             content.contentProperty().addListener((observable, oldValue, newValue) -> {
@@ -105,8 +79,39 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
             checkArrows();
         });
+    }
 
-        //TODO add keyboard shortcuts for tabPane
+    public void addPage() {
+        Platform.runLater(() -> addPage(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
+    }
+
+    public void addPage(Page page) {
+        Platform.runLater(() -> {
+            pages.add(page);
+            addPageNode(page);
+        });
+    }
+
+    public void removePage(Page page) {
+        Platform.runLater(() -> {
+            pages.remove(page);
+            Node node = pageNodeMap.remove(page);
+            if (multiPageDisplay.getSelectedPage() == page) {
+                int index = tabArea.getChildren().indexOf(node);
+                if (multiPageDisplay.getPages().size() == 0) {
+                    tabPane.setCenter(new Pane());
+                } else if (index == 0) {
+                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index));
+                } else {
+                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
+                }
+            }
+            tabArea.getChildren().remove(node);
+        });
+    }
+
+    public ReadOnlyListProperty<Page> getPages() {
+        return new ReadOnlyListWrapper(pages);
     }
 
     private void addPageNode(Page addedPage) {
@@ -124,7 +129,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         });
         node.setOnMouseDragged(event -> event.consume());
         node.setOnMouseDragEntered(event -> {
-            //TODO finish this method
             PageTabSkin sourcePageTabSkin = ((PageTabSkin)event.getGestureSource());
             PageTabSkin targetPageTabSkin = ((PageTabSkin)event.getTarget());
             Page sourcePage = sourcePageTabSkin.getPage();
@@ -134,26 +138,25 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             int targetIndex = multiPageDisplay.getPages().indexOf(targetPage);
 
             if (sourceIndex > targetIndex) {
-                multiPageDisplay.getPages().remove(sourcePage);
-                multiPageDisplay.getPages().add(targetIndex, sourcePage);
+                multiPageDisplay.removePage(sourcePage);
+                pages.add(targetIndex, sourcePage);
+                tabArea.getChildren().add(targetIndex, sourcePageTabSkin);
                 multiPageDisplay.setSelectedPage(sourcePage);
-                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected); //TODO is there a better way to handle this?
+                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected);
             } else {
                 for(int i = sourceIndex+1; i-1 < targetIndex; i++) {
                     Page removedPage = multiPageDisplay.getPages().remove(i);
-                    multiPageDisplay.getPages().add(i-1, removedPage);
+                    Node pageNode = pageNodeMap.remove(removedPage);
+                    tabArea.getChildren().remove(pageNode);
+                    tabArea.getChildren().add(i-1, pageNode);
                 }
                 multiPageDisplay.setSelectedPage(sourcePage);
-                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected); //TODO is there a better way to handle this?
+                MouseDragEvent.fireEvent(sourcePageTabSkin,dragDetected);
             }
             node.setMouseTransparent(false);
             event.consume();
         });
         node.setOnMouseDragReleased(event -> event.consume());
-    }
-
-    private void addPage() {
-        Platform.runLater(() -> multiPageDisplay.getPages().add(multiPageDisplay.getDefaultPageFactory().createDefaultPage()));
     }
 
     private void checkArrows() {
