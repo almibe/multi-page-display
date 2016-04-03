@@ -87,27 +87,24 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     public void addPage(Page page) {
         Platform.runLater(() -> {
-            pages.add(page);
             addPageNode(page);
         });
     }
 
     public void removePage(Page page) {
-        Platform.runLater(() -> {
-            pages.remove(page);
-            Node node = pageNodeMap.remove(page);
-            if (multiPageDisplay.getSelectedPage() == page) {
-                int index = tabArea.getChildren().indexOf(node);
-                if (multiPageDisplay.getPages().size() == 0) {
-                    tabPane.setCenter(new Pane());
-                } else if (index == 0) {
-                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index));
-                } else {
-                    multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
-                }
+        pages.remove(page);
+        Node node = pageNodeMap.remove(page);
+        if (multiPageDisplay.getSelectedPage() == page) {
+            int index = tabArea.getChildren().indexOf(node);
+            if (multiPageDisplay.getPages().size() == 0) {
+                tabPane.setCenter(new Pane());
+            } else if (index == 0) {
+                multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index));
+            } else {
+                multiPageDisplay.setSelectedPage(multiPageDisplay.getPages().get(index - 1));
             }
-            tabArea.getChildren().remove(node);
-        });
+        }
+        tabArea.getChildren().remove(node);
     }
 
     public ReadOnlyListProperty<Page> getPages() {
@@ -115,6 +112,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     }
 
     private void addPageNode(Page addedPage) {
+        pages.add(addedPage);
         Node node = new PageTabSkin(addedPage, this);
         pageNodeMap.put(addedPage, node);
         tabArea.getChildren().add(node);
@@ -134,11 +132,11 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             Page sourcePage = sourcePageTabSkin.getPage();
             Page targetPage = targetPageTabSkin.getPage();
             if (sourcePage == targetPage) return;
-            int sourceIndex = multiPageDisplay.getPages().indexOf(sourcePage);
-            int targetIndex = multiPageDisplay.getPages().indexOf(targetPage);
+            int sourceIndex = this.pages.indexOf(sourcePage);
+            int targetIndex = this.pages.indexOf(targetPage);
 
             if (sourceIndex > targetIndex) {
-                multiPageDisplay.removePage(sourcePage);
+                removePage(sourcePage);
                 pages.add(targetIndex, sourcePage);
                 tabArea.getChildren().add(targetIndex, sourcePageTabSkin);
                 multiPageDisplay.setSelectedPage(sourcePage);
