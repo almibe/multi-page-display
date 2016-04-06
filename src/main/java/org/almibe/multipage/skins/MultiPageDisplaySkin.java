@@ -67,6 +67,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                 openPagesList.getItems().clear();
                 newPages.forEach(page -> {
                     MenuItem menuItem = new MenuItem(page.getText());
+                    menuItem.setOnAction(event -> multiPageDisplay.setSelectedPage(page));
                     openPagesList.getItems().add(menuItem);
                 });
             });
