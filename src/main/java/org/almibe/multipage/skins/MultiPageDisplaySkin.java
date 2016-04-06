@@ -3,6 +3,9 @@ package org.almibe.multipage.skins;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyListProperty;
+import javafx.geometry.Side;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SkinBase;
 import javafx.scene.image.Image;
@@ -16,10 +19,9 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
     private final ImageView addTabButton = new ImageView(new Image(getClass().getResourceAsStream("tango/list-add32.png")));
-    private final ImageView leftArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-previous32.png")));
-    private final ImageView rightArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-next32.png")));
-    private final HBox arrowsControls = new HBox(leftArrowButton, rightArrowButton);
-    private final HBox buttonControls = new HBox(arrowsControls, addTabButton);
+    private final ImageView downArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-down32.png")));
+    private final ContextMenu openPagesList = new ContextMenu();
+    private final HBox buttonControls = new HBox(downArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
@@ -58,16 +60,18 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             tabPane.setTop(header);
             tabPane.setCenter(content);
 
-            tabArea.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
-            tabScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> checkArrows());
-
             addTabButton.setOnMouseClicked(event -> addPage());
-            rightArrowButton.setOnMouseClicked(event -> scrollRight());
-            leftArrowButton.setOnMouseClicked(event -> scrollLeft());
+            downArrowButton.setOnMouseClicked(event -> showDropDown());
+
+            tabArea.getPages().addListener((observable, oldPages, newPages) -> {
+                openPagesList.getItems().clear();
+                newPages.forEach(page -> {
+                    MenuItem menuItem = new MenuItem(page.getText());
+                    openPagesList.getItems().add(menuItem);
+                });
+            });
 
             this.getChildren().add(tabPane);
-
-            checkArrows();
         });
     }
 
@@ -87,29 +91,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         return tabArea.getPages();
     }
 
-    private void checkArrows() {
-        Platform.runLater(() -> {
-            if (tabArea.getWidth() > tabScrollPane.getWidth() && !buttonControls.getChildren().contains(arrowsControls)) {
-                buttonControls.getChildren().add(0, arrowsControls);
-                return;
-            }
-            if (tabArea.getWidth() - leftArrowButton.getImage().getWidth() - rightArrowButton.getImage().getWidth() < tabScrollPane.getWidth() && buttonControls.getChildren().contains(arrowsControls)) {
-                buttonControls.getChildren().remove(arrowsControls);
-            }
-        });
-    }
-
-    private void scrollRight() {
-        double scrollAmount = 500d/tabArea.widthProperty().doubleValue();
-        Platform.runLater(() -> {
-            tabScrollPane.setHvalue(tabScrollPane.getHvalue() + scrollAmount);
-        });
-    }
-
-    private void scrollLeft() {
-        double scrollAmount = 500d/tabArea.widthProperty().doubleValue();
-        Platform.runLater(() -> {
-            tabScrollPane.setHvalue(tabScrollPane.getHvalue() - scrollAmount);
-        });
+    private void showDropDown() {
+        openPagesList.show(downArrowButton, Side.BOTTOM, 0, 0);
     }
 }
