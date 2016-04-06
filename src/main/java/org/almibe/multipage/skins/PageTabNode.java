@@ -50,6 +50,7 @@ public class PageTabNode extends GridPane {
                 }
             }
             tabAreaNode.removePage(page);
+            event.consume();
         });
 
         selectedPage.addListener((observable, oldValue, newValue) -> {
