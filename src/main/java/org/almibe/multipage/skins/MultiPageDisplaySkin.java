@@ -1,7 +1,6 @@
 package org.almibe.multipage.skins;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -13,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 
@@ -32,18 +32,12 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     public MultiPageDisplaySkin(MultiPageDisplay multiPageDisplay) {
         super(multiPageDisplay);
         this.multiPageDisplay = multiPageDisplay;
-        this.tabArea = new TabAreaNode(multiPageDisplay.selectedPageProperty(), tabPane);
+        this.tabArea = new TabAreaNode(multiPageDisplay.selectedPageProperty());
         start();
     }
 
     public void start() {
         Platform.runLater(() -> {
-            content.contentProperty().bind(Bindings.select(multiPageDisplay.selectedPageProperty(), "content"));
-
-            content.contentProperty().addListener((observable, oldValue, newValue) -> {
-                Platform.runLater(() -> content.requestFocus());
-            });
-
             tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.contentProperty().setValue(tabArea);
@@ -59,7 +53,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             addTabButton.setOnMouseClicked(event -> addPage());
             downArrowButton.setOnMouseClicked(event -> showDropDown());
 
-            multiPageDisplay.selectedPageProperty().addListener((observable, oldPage, newPage) -> scrollToPage(newPage));
+            multiPageDisplay.selectedPageProperty().addListener((observable, oldPage, newPage) -> pageFocusChange(newPage));
 
             tabArea.getPages().addListener((observable, oldPages, newPages) -> {
                 openPagesList.getItems().clear();
@@ -68,6 +62,9 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
                     menuItem.setOnAction(event -> multiPageDisplay.setSelectedPage(page));
                     openPagesList.getItems().add(menuItem);
                 });
+                if (newPages.isEmpty()) {
+                    content.setContent(new Pane());
+                }
             });
 
             this.getChildren().add(tabPane);
@@ -94,8 +91,12 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         openPagesList.show(downArrowButton, Side.BOTTOM, 0, 0);
     }
 
-    private void scrollToPage(Page page) {
+    private void pageFocusChange(Page page) {
         Node node = tabArea.pageToNode(page);
+
+        content.setContent(page.getContent());
+        Platform.runLater(() -> content.requestFocus());
+
         double width = tabScrollPane.getContent().getBoundsInLocal().getWidth();
 
         double left = node.getBoundsInParent().getMinX();

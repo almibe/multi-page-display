@@ -7,9 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import org.almibe.multipage.Page;
 
 import java.util.HashMap;
@@ -19,13 +17,11 @@ public class TabAreaNode extends HBox {
     private final ObservableList<Page> pages = FXCollections.observableArrayList();
     private final Map<Page, Node> pageNodeMap = new HashMap<>();
     private final ObjectProperty<Page> selectedPage;
-    private final BorderPane tabPane;
     private MouseEvent dragDetected;
 
-    public TabAreaNode(ObjectProperty<Page> selectedPage, BorderPane tabPane) {
+    public TabAreaNode(ObjectProperty<Page> selectedPage) {
         super();
         this.selectedPage = selectedPage;
-        this.tabPane = tabPane;
     }
 
     public Node pageToNode(Page page) {
@@ -38,7 +34,6 @@ public class TabAreaNode extends HBox {
         pageNodeMap.put(page, node);
         getChildren().add(node);
         selectedPage.setValue(page);
-        tabPane.setCenter(page.getContent());
         node.setOnMouseReleased(event -> event.consume());
         node.setOnDragDetected(event -> {
             node.startFullDrag();
@@ -86,7 +81,7 @@ public class TabAreaNode extends HBox {
         if (selectedPage.get() == page) {
             int index = getChildren().indexOf(node);
             if (pages.size() == 0) {
-                tabPane.setCenter(new Pane());
+                //do nothing
             } else if (index == 0) {
                 selectedPage.setValue(pages.get(index));
             } else {
