@@ -97,6 +97,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         content.setContent(page.getContent());
         Platform.runLater(() -> content.requestFocus());
 
+        tabScrollPane.layout();
         double width = tabScrollPane.getContent().getBoundsInLocal().getWidth();
 
         double left = node.getBoundsInParent().getMinX();
