@@ -28,6 +28,10 @@ public class TabAreaNode extends HBox {
         this.tabPane = tabPane;
     }
 
+    public Node pageToNode(Page page) {
+        return pageNodeMap.get(page);
+    }
+
     public void addPage(Page page) {
         pages.add(page);
         Node node = new PageTabNode(page, selectedPage, this);

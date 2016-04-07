@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -26,11 +27,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
     private final TabAreaNode tabArea;
-
-    public MultiPageDisplay getMultiPageDisplay() {
-        return multiPageDisplay;
-    }
-
     private final MultiPageDisplay multiPageDisplay;
 
     public MultiPageDisplaySkin(MultiPageDisplay multiPageDisplay) {
@@ -63,6 +59,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             addTabButton.setOnMouseClicked(event -> addPage());
             downArrowButton.setOnMouseClicked(event -> showDropDown());
 
+            multiPageDisplay.selectedPageProperty().addListener((observable, oldPage, newPage) -> scrollToPage(newPage));
+
             tabArea.getPages().addListener((observable, oldPages, newPages) -> {
                 openPagesList.getItems().clear();
                 newPages.forEach(page -> {
@@ -94,5 +92,22 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private void showDropDown() {
         openPagesList.show(downArrowButton, Side.BOTTOM, 0, 0);
+    }
+
+    private void scrollToPage(Page page) {
+        Node node = tabArea.pageToNode(page);
+        double width = tabScrollPane.getContent().getBoundsInLocal().getWidth();
+
+        double left = node.getBoundsInParent().getMinX();
+        double right = node.getBoundsInParent().getMaxX();
+        double center = (left + right) / 2d;
+
+        tabScrollPane.hmaxProperty().setValue(width);
+
+        if (center < (width/2d)) {
+            tabScrollPane.setHvalue(left);
+        } else {
+            tabScrollPane.setHvalue(right);
+        }
     }
 }
