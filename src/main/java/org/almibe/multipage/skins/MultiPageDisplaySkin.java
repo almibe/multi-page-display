@@ -56,12 +56,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             multiPageDisplay.selectedPageProperty().addListener((observable, oldPage, newPage) -> pageFocusChange(newPage));
 
             tabArea.getPages().addListener((observable, oldPages, newPages) -> {
-                openPagesList.getItems().clear();
-                newPages.forEach(page -> {
-                    MenuItem menuItem = new MenuItem(page.getText());
-                    menuItem.setOnAction(event -> multiPageDisplay.setSelectedPage(page));
-                    openPagesList.getItems().add(menuItem);
-                });
                 if (newPages.isEmpty()) {
                     content.setContent(new Pane());
                 }
@@ -88,6 +82,15 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     }
 
     private void showDropDown() {
+        openPagesList.getItems().clear();
+        getPages().forEach(page -> {
+            MenuItem menuItem = new MenuItem(page.getText());
+            if (multiPageDisplay.selectedPageProperty().get() == page) {
+                menuItem.setStyle("-fx-font-weight: bold;");
+            }
+            menuItem.setOnAction(event -> multiPageDisplay.setSelectedPage(page));
+            openPagesList.getItems().add(menuItem);
+        });
         openPagesList.show(downArrowButton, Side.BOTTOM, 0, 0);
     }
 
