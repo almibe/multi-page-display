@@ -3,8 +3,6 @@ package org.almibe.multipage;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import org.almibe.multipage.skins.MultiPageDisplaySkin;
@@ -26,6 +24,10 @@ public class MultiPageDisplay extends Control {
 
     public ReadOnlyListProperty<Page> getPages() {
         return multiPageDisplaySkin.getPages();
+    }
+
+    public void addPage() {
+        multiPageDisplaySkin.addPage();
     }
 
     public void addPage(Page page) {
