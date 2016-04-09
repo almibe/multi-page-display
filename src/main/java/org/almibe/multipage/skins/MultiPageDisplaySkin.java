@@ -24,7 +24,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final ContextMenu openPagesList = new ContextMenu();
     private final HBox buttonControls = new HBox(downArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
-    private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
     private final TabAreaNode tabArea;
     private final MultiPageDisplay multiPageDisplay;
@@ -48,7 +47,6 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             header.setRight(buttonControls);
 
             tabPane.setTop(header);
-            tabPane.setCenter(content);
 
             addTabButton.setOnMouseClicked(event -> addPage());
             downArrowButton.setOnMouseClicked(event -> showDropDown());
@@ -57,7 +55,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
             tabArea.getPages().addListener((observable, oldPages, newPages) -> {
                 if (newPages.isEmpty()) {
-                    content.setContent(new Pane());
+                    tabPane.setCenter(new Pane());
                 }
             });
 
@@ -97,8 +95,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private void pageFocusChange(Page page) {
         Node node = tabArea.pageToNode(page);
 
-        content.setContent(page.getContent());
-        Platform.runLater(() -> content.requestFocus());
+        tabPane.setCenter(page.getContent());
+        Platform.runLater(() -> tabPane.getCenter().requestFocus());
 
         tabScrollPane.layout();
         double width = tabScrollPane.getContent().getBoundsInLocal().getWidth();

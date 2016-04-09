@@ -2,12 +2,15 @@ package org.almibe.multipage.demo;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
@@ -41,8 +44,14 @@ public class MultiPageDisplayDemo extends Application {
                     event.consume();
                 }
             });
+            VBox node = new VBox(new Label("Test"));
+            node.setMaxHeight(Double.MAX_VALUE);
+            node.setMaxWidth(Double.MAX_VALUE);
+            VBox.setVgrow(node, Priority.ALWAYS);
+            node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            Page page6 = new Page("Test", createImageView(), node);
 
-            Arrays.asList(page, page2, page3, page4, page5).forEach(it -> multiPageDisplay.addPage(it));
+            Arrays.asList(page, page2, page3, page4, page5, page6).forEach(it -> multiPageDisplay.addPage(it));
         });
     }
 
