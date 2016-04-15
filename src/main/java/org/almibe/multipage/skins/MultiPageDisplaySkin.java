@@ -24,6 +24,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private final ContextMenu openPagesList = new ContextMenu();
     private final HBox buttonControls = new HBox(downArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
+    private final ScrollPane content = new ScrollPane();
     private final BorderPane tabPane = new BorderPane();
     private final TabAreaNode tabArea;
     private final MultiPageDisplay multiPageDisplay;
@@ -41,12 +42,16 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.contentProperty().setValue(tabArea);
 
+            content.setFitToHeight(true);
+            content.setFitToWidth(true);
+
             tabScrollPane.setStyle("-fx-background: rgb(200,200,200);");
 
             header.setCenter(tabScrollPane);
             header.setRight(buttonControls);
 
             tabPane.setTop(header);
+            tabPane.setCenter(content);
 
             addTabButton.setOnMouseClicked(event -> addPage());
             downArrowButton.setOnMouseClicked(event -> showDropDown());
@@ -95,8 +100,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private void pageFocusChange(Page page) {
         Node node = tabArea.pageToNode(page);
 
-        tabPane.setCenter(page.getContent());
-        Platform.runLater(() -> tabPane.getCenter().requestFocus());
+        content.setContent(page.getContent());
+        Platform.runLater(() -> content.requestFocus());
 
         tabScrollPane.layout();
         double width = tabScrollPane.getContent().getBoundsInLocal().getWidth();
