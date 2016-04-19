@@ -60,7 +60,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
             tabArea.getPages().addListener((observable, oldPages, newPages) -> {
                 if (newPages.isEmpty()) {
-                    tabPane.setCenter(new Pane());
+                    content.setContent(new Pane());
                 }
             });
 
