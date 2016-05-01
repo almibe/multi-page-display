@@ -18,7 +18,7 @@ import org.almibe.multipage.Page;
 public class PageTabNode extends GridPane {
     private final Page page;
     private final Label text = new Label();
-    private final Image closeIcon = new Image(getClass().getResourceAsStream("tango/emblem-unreadable16.png"));
+    private final Image closeIcon = new Image(getClass().getResourceAsStream("material/ic_close_black_18dp.png"));
     private final ImageView closeButton = new ImageView(closeIcon);
     private final ObjectProperty<Page> selectedPage;
 

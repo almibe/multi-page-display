@@ -23,8 +23,8 @@ import org.almibe.multipage.Page;
 public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
-    private final ImageView addTabButton = new ImageView(new Image(getClass().getResourceAsStream("tango/list-add32.png")));
-    private final ImageView downArrowButton = new ImageView(new Image(getClass().getResourceAsStream("tango/go-down32.png")));
+    private final ImageView addTabButton = new ImageView(new Image(getClass().getResourceAsStream("material/ic_add_black_36dp.png")));
+    private final ImageView downArrowButton = new ImageView(new Image(getClass().getResourceAsStream("material/ic_keyboard_arrow_down_black_36dp.png")));
     private final ContextMenu openPagesList = new ContextMenu();
     private final HBox buttonControls = new HBox(downArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
