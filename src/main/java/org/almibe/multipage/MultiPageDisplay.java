@@ -38,6 +38,10 @@ public class MultiPageDisplay extends Control {
         multiPageDisplaySkin.addPage(page);
     }
 
+    public void replacePage(Page oldPage, Page newPage) {
+        multiPageDisplaySkin.replacePage(oldPage, newPage);
+    }
+
     public void removePage(Page page) {
         multiPageDisplaySkin.removePage(page);
     }
