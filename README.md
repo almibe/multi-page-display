@@ -10,5 +10,5 @@ com.sun.* packages and usages of reflection to build a tab pane.
 To test out run the MultiPageDisplayDemo class once project is checked
 out & built.
 
-This project is Licensed under the GPL v2 w/ Classpath Exception, the
-same license as the OpenJDK project.
+This project is Licensed under the MPL v2 and uses icons from the
+Google Material icon set.
