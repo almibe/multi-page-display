@@ -6,6 +6,7 @@ package org.almibe.multipage.skins;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,8 +19,8 @@ import org.almibe.multipage.Page;
 public class PageTabNode extends GridPane {
     private final Page page;
     private final Label text = new Label();
-    private final Image closeIcon = new Image(getClass().getResourceAsStream("material/ic_close_black_18dp.png"));
-    private final ImageView closeButton = new ImageView(closeIcon);
+    private final ImageView closeIcon = new ImageView(new Image(getClass().getResourceAsStream("material/ic_close_black_18dp.png")));
+    private final Button closeButton = new Button();
     private final ObjectProperty<Page> selectedPage;
 
     public PageTabNode(Page page, ObjectProperty<Page> selectedPage, TabAreaNode tabAreaNode) {
@@ -28,6 +29,11 @@ public class PageTabNode extends GridPane {
         this.selectedPage = selectedPage;
 
         text.textProperty().bind(page.textProperty());
+
+        closeButton.setGraphic(closeIcon);
+        closeButton.setStyle("-fx-background-color: transparent;");
+        closeButton.setPadding(new Insets(0));
+        closeButton.setBorder(null);
 
         getColumnConstraints().add(new ColumnConstraints(20));
         GridPane.setConstraints(page.getImageView(), 0, 0);

@@ -6,12 +6,10 @@ package org.almibe.multipage.skins;
 
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyListProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SkinBase;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -23,8 +21,10 @@ import org.almibe.multipage.Page;
 public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     private final ScrollPane tabScrollPane = new ScrollPane();
-    private final ImageView addTabButton = new ImageView(new Image(getClass().getResourceAsStream("material/ic_add_black_36dp.png")));
-    private final ImageView downArrowButton = new ImageView(new Image(getClass().getResourceAsStream("material/ic_keyboard_arrow_down_black_36dp.png")));
+    private final ImageView addTabButtonImage = new ImageView(new Image(getClass().getResourceAsStream("material/ic_add_black_36dp.png")));
+    private final Button addTabButton = new Button();
+    private final ImageView downArrowButtonImage = new ImageView(new Image(getClass().getResourceAsStream("material/ic_keyboard_arrow_down_black_36dp.png")));
+    private final Button downArrowButton = new Button();
     private final ContextMenu openPagesList = new ContextMenu();
     private final HBox buttonControls = new HBox(downArrowButton, addTabButton);
     private final BorderPane header = new BorderPane();
@@ -42,6 +42,16 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
     public void start() {
         Platform.runLater(() -> {
+            addTabButton.setGraphic(addTabButtonImage);
+            downArrowButton.setGraphic(downArrowButtonImage);
+
+            addTabButton.setStyle("-fx-background-color: #FFFFFF;");
+            downArrowButton.setStyle("-fx-background-color: #FFFFFF;");
+            addTabButton.setPadding(new Insets(0));
+            downArrowButton.setPadding(new Insets(0));
+            addTabButton.setBorder(null);
+            downArrowButton.setBorder(null);
+
             tabScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             tabScrollPane.contentProperty().setValue(tabArea);
