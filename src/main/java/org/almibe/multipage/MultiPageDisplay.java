@@ -13,12 +13,12 @@ import org.almibe.multipage.skins.MultiPageDisplaySkin;
 
 public class MultiPageDisplay extends Control {
     private final ObjectProperty<Page> selectedPage = new SimpleObjectProperty<>();
-    private final DefaultPageFactory defaultPageFactory;
+    private final NewPageAction newPageAction;
     private final MultiPageDisplaySkin multiPageDisplaySkin;
 
-    public MultiPageDisplay(DefaultPageFactory defaultPageFactory) {
+    public MultiPageDisplay(NewPageAction newPageAction) {
         multiPageDisplaySkin = new MultiPageDisplaySkin(this);
-        this.defaultPageFactory = defaultPageFactory;
+        this.newPageAction = newPageAction;
     }
 
     @Override
@@ -54,8 +54,8 @@ public class MultiPageDisplay extends Control {
         return selectedPage;
     }
 
-    public DefaultPageFactory getDefaultPageFactory() {
-        return defaultPageFactory;
+    public NewPageAction getNewPageAction() {
+        return newPageAction;
     }
 
     public void setSelectedPage(Page selectedPage) {

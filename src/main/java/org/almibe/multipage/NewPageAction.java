@@ -4,6 +4,6 @@
 
 package org.almibe.multipage;
 
-public interface DefaultPageFactory {
-    Page createDefaultPage();
+public interface NewPageAction {
+    void onAddPage(MultiPageDisplay multiPageDisplay);
 }

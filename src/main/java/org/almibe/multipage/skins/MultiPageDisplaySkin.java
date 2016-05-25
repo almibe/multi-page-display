@@ -83,7 +83,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     }
 
     public void addPage() {
-        tabArea.addPage(multiPageDisplay.getDefaultPageFactory().createDefaultPage());
+        multiPageDisplay.getNewPageAction().onAddPage(multiPageDisplay);
     }
 
     public void addPage(Page page) {
