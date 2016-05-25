@@ -29,7 +29,7 @@ public class MultiPageDisplayDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(() -> new Page("Hey", createImageView(), new Label("Hey Content")));
+        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd -> mpd.addPage(new Page("Hey", createImageView(), new Label("Hey Content"))));
 
         primaryStage.setScene(new Scene(multiPageDisplay, 700, 450));
         primaryStage.show();
