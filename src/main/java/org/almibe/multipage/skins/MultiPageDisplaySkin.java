@@ -93,7 +93,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     public void replacePage(Page oldPage, Page newPage) {
         int location = tabArea.getPages().indexOf(oldPage);
         tabArea.removePage(oldPage);
-        tabArea.getPages().add(location, newPage);
+        tabArea.addPage(location, newPage);
     }
 
     public void removePage(Page page) {

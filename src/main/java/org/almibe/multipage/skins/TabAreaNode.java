@@ -33,10 +33,14 @@ public class TabAreaNode extends HBox {
     }
 
     public void addPage(Page page) {
-        pages.add(page);
+        addPage(pages.size(), page);
+    }
+
+    public void addPage(int index, Page page) {
+        pages.add(index, page);
         Node node = new PageTabNode(page, selectedPage, this);
         pageNodeMap.put(page, node);
-        getChildren().add(node);
+        getChildren().add(index, node);
         selectedPage.setValue(page);
         node.setOnMouseReleased(event -> event.consume());
         node.setOnDragDetected(event -> {
