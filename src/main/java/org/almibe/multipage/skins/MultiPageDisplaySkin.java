@@ -118,6 +118,10 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     }
 
     private void pageFocusChange(Page page) {
+        if (page == null) {
+            return;
+        }
+
         Node node = tabArea.pageToNode(page);
 
         content.setContent(page.getContent());
