@@ -89,7 +89,7 @@ public class TabAreaNode extends HBox {
         if (selectedPage.get() == page) {
             int index = getChildren().indexOf(node);
             if (pages.size() == 0) {
-                //do nothing
+                selectedPage.setValue(null);
             } else if (index == 0) {
                 selectedPage.setValue(pages.get(index));
             } else {
