@@ -36,7 +36,7 @@ public class PageTabNode extends GridPane {
         closeButton.setBorder(null);
 
         getColumnConstraints().add(new ColumnConstraints(20));
-        GridPane.setConstraints(page.getImageView(), 0, 0);
+        GridPane.setConstraints(page.getIcon(), 0, 0);
 
         getColumnConstraints().add(new ColumnConstraints(200));
         GridPane.setConstraints(text, 1, 0);
@@ -44,7 +44,7 @@ public class PageTabNode extends GridPane {
         getColumnConstraints().add(new ColumnConstraints(20));
         GridPane.setConstraints(closeButton, 2, 0);
 
-        getChildren().addAll(page.getImageView(), text, closeButton);
+        getChildren().addAll(page.getIcon(), text, closeButton);
 
         setPadding(new Insets(10d));
         setBorder(createBorder());

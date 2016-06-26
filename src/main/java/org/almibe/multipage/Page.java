@@ -17,24 +17,24 @@ public class Page {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
     private final StringProperty text = new SimpleStringProperty();
     private final EventHandler<Event> onCloseRequest;
-    private final ImageView imageView;
+    private final Node icon;
 
-    public Page(String title, ImageView image, Node node) {
+    public Page(String title, Node image, Node node) {
         text.setValue(title);
         content.setValue(node);
-        imageView = image;
+        icon = image;
         onCloseRequest = null;
     }
 
     public Page(String title, ImageView image, Node node, EventHandler<Event> onCloseRequest) {
         text.setValue(title);
         content.setValue(node);
-        imageView = image;
+        icon = image;
         this.onCloseRequest = onCloseRequest;
     }
 
-    public ImageView getImageView() {
-        return imageView;
+    public Node getIcon() {
+        return icon;
     }
 
     public Node getContent() {
