@@ -11,7 +11,6 @@ import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 
 public class Page {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
@@ -19,17 +18,17 @@ public class Page {
     private final EventHandler<Event> onCloseRequest;
     private final Node icon;
 
-    public Page(String title, Node image, Node node) {
-        text.setValue(title);
-        content.setValue(node);
-        icon = image;
-        onCloseRequest = null;
+    public Page(String title, Node icon, Node node) {
+        this.text.setValue(title);
+        this.content.setValue(node);
+        this.icon = icon;
+        this.onCloseRequest = null;
     }
 
-    public Page(String title, ImageView image, Node node, EventHandler<Event> onCloseRequest) {
-        text.setValue(title);
-        content.setValue(node);
-        icon = image;
+    public Page(String title, Node icon, Node node, EventHandler<Event> onCloseRequest) {
+        this.text.setValue(title);
+        this.content.setValue(node);
+        this.icon = icon;
         this.onCloseRequest = onCloseRequest;
     }
 
