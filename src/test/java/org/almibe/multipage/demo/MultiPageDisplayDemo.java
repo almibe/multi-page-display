@@ -6,6 +6,7 @@ package org.almibe.multipage.demo;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -29,17 +30,17 @@ public class MultiPageDisplayDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd -> mpd.addPage(new Page("Hey", createImageView(), new Label("Hey Content"))));
+        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd -> mpd.addPage(new Page(new SimpleStringProperty("Hey"), createImageView(), new Label("Hey Content"))));
 
         primaryStage.setScene(new Scene(multiPageDisplay, 700, 450));
         primaryStage.show();
 
         Platform.runLater(() -> {
-            Page page = new Page("Hello Demo 1", createImageView(),new Label("Hello Demo Content"));
-            Page page2 = new Page("Hello Demo 2", createImageView(), new Label("Hello Demo Content?"));
-            Page page3 = new Page("Hello Demo 3", createImageView(), new Label("Hello Demo Content!"));
-            Page page4 = new Page("Hello Demo 4", createImageView(), new Label("Hello Demo Content?!?!!"));
-            Page page5 = new Page("Prompt to close", createImageView(), new Label("Click yes to close"), event -> {
+            Page page = new Page(new SimpleStringProperty("Hello Demo 1"), createImageView(),new Label("Hello Demo Content"));
+            Page page2 = new Page(new SimpleStringProperty("Hello Demo 2"), createImageView(), new Label("Hello Demo Content?"));
+            Page page3 = new Page(new SimpleStringProperty("Hello Demo 3"), createImageView(), new Label("Hello Demo Content!"));
+            Page page4 = new Page(new SimpleStringProperty("Hello Demo 4"), createImageView(), new Label("Hello Demo Content?!?!!"));
+            Page page5 = new Page(new SimpleStringProperty("Prompt to close"), createImageView(), new Label("Click yes to close"), event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Close Tab?");
                 alert.setHeaderText("Do you want to close this tab?");
@@ -53,7 +54,7 @@ public class MultiPageDisplayDemo extends Application {
             node.setMaxWidth(Double.MAX_VALUE);
             VBox.setVgrow(node, Priority.ALWAYS);
             node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-            Page page6 = new Page("Test", createImageView(), node);
+            Page page6 = new Page(new SimpleStringProperty("Test"), createImageView(), node);
 
             Arrays.asList(page, page2, page3, page4, page5, page6).forEach(it -> multiPageDisplay.addPage(it));
         });
