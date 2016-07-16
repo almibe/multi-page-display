@@ -6,7 +6,6 @@ package org.almibe.multipage;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -14,19 +13,19 @@ import javafx.scene.Node;
 
 public class Page {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
-    private final StringProperty text = new SimpleStringProperty();
+    private final StringProperty title;
     private final EventHandler<Event> onCloseRequest;
     private final Node icon;
 
-    public Page(String title, Node icon, Node node) {
-        this.text.setValue(title);
+    public Page(StringProperty title, Node icon, Node node) {
+        this.title = title;
         this.content.setValue(node);
         this.icon = icon;
         this.onCloseRequest = null;
     }
 
-    public Page(String title, Node icon, Node node, EventHandler<Event> onCloseRequest) {
-        this.text.setValue(title);
+    public Page(StringProperty title, Node icon, Node node, EventHandler<Event> onCloseRequest) {
+        this.title = title;
         this.content.setValue(node);
         this.icon = icon;
         this.onCloseRequest = onCloseRequest;
@@ -48,16 +47,16 @@ public class Page {
         content.setValue(node);
     }
 
-    public String getText() {
-        return text.get();
+    public String getTitle() {
+        return title.get();
     }
 
-    public StringProperty textProperty() {
-        return text;
+    public StringProperty titleProperty() {
+        return title;
     }
 
-    public void setText(String newValue) {
-        text.set(newValue);
+    public void setTitle(String newValue) {
+        title.set(newValue);
     }
 
     public EventHandler<Event> getOnCloseRequest() {

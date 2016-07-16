@@ -107,7 +107,8 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
     private void showDropDown() {
         openPagesList.getItems().clear();
         getPages().forEach(page -> {
-            MenuItem menuItem = new MenuItem(page.getText());
+            MenuItem menuItem = new MenuItem();
+            menuItem.textProperty().bind(page.titleProperty());
             if (multiPageDisplay.selectedPageProperty().get() == page) {
                 menuItem.setStyle("-fx-font-weight: bold;");
             }
