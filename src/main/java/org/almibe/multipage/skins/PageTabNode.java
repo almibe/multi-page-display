@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -49,18 +51,15 @@ public class PageTabNode extends GridPane {
         setPadding(new Insets(10d));
         setBorder(createBorder());
         this.setOnMouseClicked(event -> {
-            this.selectedPage.set(page);
+            if (event.getButton() == MouseButton.PRIMARY) {
+                this.selectedPage.set(page);
+            } else if (event.getButton() == MouseButton.MIDDLE) {
+                handleClose(event, tabAreaNode);
+            }
         });
 
         closeButton.setOnMouseClicked(event -> {
-            if (page.getOnCloseRequest() != null) {
-                page.getOnCloseRequest().handle(event);
-                if (event.isConsumed()) {
-                    return;
-                }
-            }
-            tabAreaNode.removePage(page);
-            event.consume();
+            handleClose(event, tabAreaNode);
         });
 
         selectedPage.addListener((observable, oldValue, newValue) -> {
@@ -73,6 +72,17 @@ public class PageTabNode extends GridPane {
                 title.setFont(Font.font(title.getFont().getFamily(), FontWeight.BOLD, title.getFont().getSize()));
             }
         });
+    }
+
+    private void handleClose(MouseEvent event, TabAreaNode tabAreaNode) {
+        if (page.getOnCloseRequest() != null) {
+            page.getOnCloseRequest().handle(event);
+            if (event.isConsumed()) {
+                return;
+            }
+        }
+        tabAreaNode.removePage(page);
+        event.consume();
     }
 
     private Border createBorder() {
