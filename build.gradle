@@ -1,24 +1,29 @@
 buildscript {
     repositories {
-        mavenCentral()
+        mavenLocal()
+        jcenter()
     }
     dependencies {
         classpath 'org.dm.gradle:gradle-bundle-plugin:0.8.2'
+        classpath 'org.almibe:easy-pub-plugin:0.3.0'
     }
 }
 
+apply plugin: 'org.almibe.easypubplugin'
 apply plugin: 'org.dm.bundle'
 apply plugin: 'java'
 apply plugin: 'maven'
 
 sourceCompatibility = '1.8'
+targetCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 version = '0.1.0'
 group = 'org.almibe'
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    jcenter()
 }
 
 dependencies {
