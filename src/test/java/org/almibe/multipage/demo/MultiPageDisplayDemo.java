@@ -40,14 +40,15 @@ public class MultiPageDisplayDemo extends Application {
             Page page2 = new Page(new SimpleStringProperty("Hello Demo 2"), createImageView(), new Label("Hello Demo Content?"));
             Page page3 = new Page(new SimpleStringProperty("Hello Demo 3"), createImageView(), new Label("Hello Demo Content!"));
             Page page4 = new Page(new SimpleStringProperty("Hello Demo 4"), createImageView(), new Label("Hello Demo Content?!?!!"));
-            Page page5 = new Page(new SimpleStringProperty("Prompt to close"), createImageView(), new Label("Click yes to close"), event -> {
+            Page page5 = new Page(new SimpleStringProperty("Prompt to close"), createImageView(), new Label("Click yes to close"), () -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Close Tab?");
                 alert.setHeaderText("Do you want to close this tab?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() != ButtonType.OK){
-                    event.consume();
+                    return false;
                 }
+                return true;
             });
             VBox node = new VBox(new Label("Test"));
             node.setMaxHeight(Double.MAX_VALUE);

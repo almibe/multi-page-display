@@ -7,28 +7,28 @@ package org.almibe.multipage;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
+
+import java.util.concurrent.Callable;
 
 public class Page {
     private final ObjectProperty<Node> content = new SimpleObjectProperty<>();
     private final ReadOnlyStringProperty title;
-    private final EventHandler<Event> onCloseRequest;
+    private final Callable<Boolean> allowClose;
     private final Node icon;
 
     public Page(ReadOnlyStringProperty title, Node icon, Node node) {
         this.title = title;
         this.content.setValue(node);
         this.icon = icon;
-        this.onCloseRequest = null;
+        this.allowClose = null;
     }
 
-    public Page(ReadOnlyStringProperty title, Node icon, Node node, EventHandler<Event> onCloseRequest) {
+    public Page(ReadOnlyStringProperty title, Node icon, Node node, Callable<Boolean> allowClose) {
         this.title = title;
         this.content.setValue(node);
         this.icon = icon;
-        this.onCloseRequest = onCloseRequest;
+        this.allowClose = allowClose;
     }
 
     public Node getIcon() {
@@ -51,7 +51,7 @@ public class Page {
         return title;
     }
 
-    public EventHandler<Event> getOnCloseRequest() {
-        return onCloseRequest;
+    public Callable<Boolean> getAllowClose() {
+        return allowClose;
     }
 }

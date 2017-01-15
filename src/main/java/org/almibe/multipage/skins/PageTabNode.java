@@ -75,14 +75,14 @@ public class PageTabNode extends GridPane {
     }
 
     private void handleClose(MouseEvent event, TabAreaNode tabAreaNode) {
-        if (page.getOnCloseRequest() != null) {
-            page.getOnCloseRequest().handle(event);
-            if (event.isConsumed()) {
-                return;
+        try {
+            if (page.getAllowClose() == null || page.getAllowClose().call().booleanValue()) {
+                tabAreaNode.removePage(page);
+                event.consume();
             }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        tabAreaNode.removePage(page);
-        event.consume();
     }
 
     private Border createBorder() {
