@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
+import org.almibe.multipage.PageBuilder;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -30,32 +31,63 @@ public class MultiPageDisplayDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd -> mpd.addPage(new Page(new SimpleStringProperty("Hey"), createImageView(), new Label("Hey Content"))));
+        MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd ->
+            mpd.addPage(new PageBuilder()
+                .setTitle(new SimpleStringProperty("Hey"))
+                .setIcon(createImageView())
+                .setContent(new Label("Hey Content")).createPage())
+        );
 
         primaryStage.setScene(new Scene(multiPageDisplay, 700, 450));
         primaryStage.show();
 
         Platform.runLater(() -> {
-            Page page = new Page(new SimpleStringProperty("Hello Demo 1"), createImageView(),new Label("Hello Demo Content"));
-            Page page2 = new Page(new SimpleStringProperty("Hello Demo 2"), createImageView(), new Label("Hello Demo Content?"));
-            Page page3 = new Page(new SimpleStringProperty("Hello Demo 3"), createImageView(), new Label("Hello Demo Content!"));
-            Page page4 = new Page(new SimpleStringProperty("Hello Demo 4"), createImageView(), new Label("Hello Demo Content?!?!!"));
-            Page page5 = new Page(new SimpleStringProperty("Prompt to close"), createImageView(), new Label("Click yes to close"), () -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Close Tab?");
-                alert.setHeaderText("Do you want to close this tab?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() != ButtonType.OK){
-                    return false;
-                }
-                return true;
-            });
+
+            Page page = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Hello Demo 1"))
+                .setIcon(createImageView())
+                .setContent(new Label("Hello Demo Content")).createPage();
+
+            Page page2 = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Hello Demo 2"))
+                .setIcon(createImageView())
+                .setContent(new Label("Hello Demo Content?")).createPage();
+
+            Page page3 = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Hello Demo 3"))
+                .setIcon(createImageView())
+                .setContent(new Label("Hello Demo Content!")).createPage();
+
+            Page page4 = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Hello Demo 4"))
+                .setIcon(createImageView())
+                .setContent(new Label("Hello Demo Content?!?!!")).createPage();
+
+            Page page5 = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Prompt to close"))
+                .setIcon(createImageView())
+                .setContent(new Label("Click yes to close"))
+                .setAllowClose(() -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Close Tab?");
+                    alert.setHeaderText("Do you want to close this tab?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() != ButtonType.OK){
+                        return false;
+                    }
+                    return true;
+                }).createPage();
+
             VBox node = new VBox(new Label("Test"));
             node.setMaxHeight(Double.MAX_VALUE);
             node.setMaxWidth(Double.MAX_VALUE);
             VBox.setVgrow(node, Priority.ALWAYS);
             node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-            Page page6 = new Page(new SimpleStringProperty("Test"), createImageView(), node);
+
+            Page page6 = new PageBuilder()
+                .setTitle(new SimpleStringProperty("Test"))
+                .setIcon(createImageView())
+                .setContent(node).createPage();
 
             Arrays.asList(page, page2, page3, page4, page5, page6).forEach(it -> multiPageDisplay.addPage(it));
         });

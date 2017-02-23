@@ -108,7 +108,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
         openPagesList.getItems().clear();
         getPages().forEach(page -> {
             MenuItem menuItem = new MenuItem();
-            menuItem.textProperty().bind(page.titleProperty());
+            menuItem.textProperty().bind(page.title());
             if (multiPageDisplay.selectedPageProperty().get() == page) {
                 menuItem.setStyle("-fx-font-weight: bold;");
             }
@@ -125,7 +125,7 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
         Node node = tabArea.pageToNode(page);
 
-        content.setContent(page.getContent());
+        content.setContent(page.content());
         Platform.runLater(() -> content.requestFocus());
 
         tabScrollPane.layout();

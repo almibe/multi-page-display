@@ -30,7 +30,7 @@ public class PageTabNode extends GridPane {
         this.page = page;
         this.selectedPage = selectedPage;
 
-        title.textProperty().bind(page.titleProperty());
+        title.textProperty().bind(page.title());
 
         closeButton.setGraphic(closeIcon);
         closeButton.setStyle("-fx-background-color: transparent;");
@@ -38,7 +38,7 @@ public class PageTabNode extends GridPane {
         closeButton.setBorder(null);
 
         getColumnConstraints().add(new ColumnConstraints(20));
-        GridPane.setConstraints(page.getIcon(), 0, 0);
+        GridPane.setConstraints(page.icon(), 0, 0);
 
         getColumnConstraints().add(new ColumnConstraints(200));
         GridPane.setConstraints(title, 1, 0);
@@ -46,7 +46,7 @@ public class PageTabNode extends GridPane {
         getColumnConstraints().add(new ColumnConstraints(20));
         GridPane.setConstraints(closeButton, 2, 0);
 
-        getChildren().addAll(page.getIcon(), title, closeButton);
+        getChildren().addAll(page.icon(), title, closeButton);
 
         setPadding(new Insets(10d));
         setBorder(createBorder());
@@ -76,7 +76,7 @@ public class PageTabNode extends GridPane {
 
     private void handleClose(MouseEvent event, TabAreaNode tabAreaNode) {
         try {
-            if (page.getAllowClose() == null || page.getAllowClose().call().booleanValue()) {
+            if (page.allowClose() == null || page.allowClose().call().booleanValue()) {
                 tabAreaNode.removePage(page);
                 event.consume();
             }
