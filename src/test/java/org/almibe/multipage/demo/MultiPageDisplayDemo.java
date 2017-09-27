@@ -4,69 +4,68 @@
 
 package org.almibe.multipage.demo;
 
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.almibe.multipage.DnDTabbedPane;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 import org.almibe.multipage.PageBuilder;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class MultiPageDisplayDemo extends Application {
+public class MultiPageDisplayDemo {
+
     public static void main(String[] args) {
-        launch(args);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Demo");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            DnDTabbedPane tabbedPane = new DnDTabbedPane();
+            tabbedPane.add("Tab A", new JLabel("A"));
+            tabbedPane.add("Tab B", new JLabel("B"));
+            tabbedPane.add("Tab C", new JLabel("C"));
+
+            frame.getContentPane().add(tabbedPane);
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
 
-    @Override
     public void start(Stage primaryStage) {
         MultiPageDisplay multiPageDisplay = new MultiPageDisplay(mpd ->
-            mpd.addPage(new PageBuilder()
-                .setTitle(new SimpleStringProperty("Hey"))
-                .setIcon(createImageView())
-                .setContent(new Label("Hey Content")).createPage())
-        );
-
-        primaryStage.setScene(new Scene(multiPageDisplay, 700, 450));
-        primaryStage.show();
+            mpd.addTab("Hey", createImageView(), createPanel()
+        ));
 
         Platform.runLater(() -> {
 
             Page page = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Hello Demo 1"))
+                .setTitle("Hello Demo 1")
                 .setIcon(createImageView())
-                .setContent(new Label("Hello Demo Content")).createPage();
+                .setContent(new JLabel("Hello Demo Content")).createPage();
 
             Page page2 = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Hello Demo 2"))
+                .setTitle("Hello Demo 2")
                 .setIcon(createImageView())
-                .setContent(new Label("Hello Demo Content?")).createPage();
+                .setContent(new JLabel("Hello Demo Content?")).createPage();
 
             Page page3 = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Hello Demo 3"))
+                .setTitle("Hello Demo 3")
                 .setIcon(createImageView())
-                .setContent(new Label("Hello Demo Content!")).createPage();
+                .setContent(new JLabel("Hello Demo Content!")).createPage();
 
             Page page4 = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Hello Demo 4"))
+                .setTitle("Hello Demo 4")
                 .setIcon(createImageView())
-                .setContent(new Label("Hello Demo Content?!?!!")).createPage();
+                .setContent(new JLabel("Hello Demo Content?!?!!")).createPage();
 
             Page page5 = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Prompt to close"))
+                .setTitle("Prompt to close")
                 .setIcon(createImageView())
-                .setContent(new Label("Click yes to close"))
+                .setContent(new JLabel("Click yes to close"))
                 .setAllowClose(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Close Tab?");
@@ -78,22 +77,28 @@ public class MultiPageDisplayDemo extends Application {
                     return true;
                 }).createPage();
 
-            VBox node = new VBox(new Label("Test"));
-            node.setMaxHeight(Double.MAX_VALUE);
-            node.setMaxWidth(Double.MAX_VALUE);
-            VBox.setVgrow(node, Priority.ALWAYS);
-            node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+//            VBox node = new VBox(new Label("Test"));
+//            node.setMaxHeight(Double.MAX_VALUE);
+//            node.setMaxWidth(Double.MAX_VALUE);
+//            VBox.setVgrow(node, Priority.ALWAYS);
+//            node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
             Page page6 = new PageBuilder()
-                .setTitle(new SimpleStringProperty("Test"))
+                .setTitle("Test")
                 .setIcon(createImageView())
-                .setContent(node).createPage();
+                .setContent(new JLabel("Test")).createPage();
 
             Arrays.asList(page, page2, page3, page4, page5, page6).forEach(it -> multiPageDisplay.addPage(it));
         });
     }
 
-    ImageView createImageView() {
-        return new ImageView(new Image(getClass().getResourceAsStream("page_white_text.png")));
+    ImageIcon createImageView() {
+        return new ImageIcon(getClass().getResource("page_white_text.png"));
+    }
+
+    JPanel createPanel() {
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Hey Content"));
+        return panel;
     }
 }

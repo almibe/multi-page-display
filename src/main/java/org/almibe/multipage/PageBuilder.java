@@ -1,30 +1,29 @@
 package org.almibe.multipage;
 
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
 
+import javax.swing.*;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class PageBuilder {
-    private Node content;
-    private ReadOnlyStringProperty title;
-    private Node icon;
+    private JComponent content;
+    private String title;
+    private ImageIcon icon;
     private Callable<Boolean> allowClose;
     private Map<KeyCombination, Runnable> accelerators;
 
-    public PageBuilder setContent(Node content) {
+    public PageBuilder setContent(JComponent content) {
         this.content = content;
         return this;
     }
 
-    public PageBuilder setTitle(ReadOnlyStringProperty title) {
+    public PageBuilder setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public PageBuilder setIcon(Node icon) {
+    public PageBuilder setIcon(ImageIcon icon) {
         this.icon = icon;
         return this;
     }
@@ -41,13 +40,13 @@ public class PageBuilder {
 
     public Page createPage() {
         return new Page() {
-            @Override public Node content() {
+            @Override public JComponent component() {
                 return content;
             }
-            @Override public ReadOnlyStringProperty title() {
+            @Override public String title() {
                 return title;
             }
-            @Override public Node icon() {
+            @Override public ImageIcon icon() {
                 return icon;
             }
             @Override public Callable<Boolean> allowClose() {

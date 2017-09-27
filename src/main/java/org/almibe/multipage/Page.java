@@ -4,17 +4,16 @@
 
 package org.almibe.multipage;
 
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
 
+import javax.swing.*;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 public interface Page {
-    Node content();
-    ReadOnlyStringProperty title();
-    Node icon();
+    JComponent component();
+    String title();
+    ImageIcon icon();
     Callable<Boolean> allowClose();
     Map<KeyCombination, Runnable> accelerators();
 }

@@ -4,61 +4,43 @@
 
 package org.almibe.multipage;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.control.Control;
-import javafx.scene.control.Skin;
-import org.almibe.multipage.skins.MultiPageDisplaySkin;
-
-public class MultiPageDisplay extends Control {
-    private final ObjectProperty<Page> selectedPage = new SimpleObjectProperty<>();
+public class MultiPageDisplay {
     private final NewPageAction newPageAction;
-    private final MultiPageDisplaySkin multiPageDisplaySkin;
+    private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
 
     public MultiPageDisplay(NewPageAction newPageAction) {
-        multiPageDisplaySkin = new MultiPageDisplaySkin(this);
         this.newPageAction = newPageAction;
     }
 
-    @Override
-    protected Skin<?> createDefaultSkin() {
-        return multiPageDisplaySkin;
-    }
-
-    public ReadOnlyListProperty<Page> getPages() {
-        return multiPageDisplaySkin.getPages();
-    }
-
     public void addPage() {
-        multiPageDisplaySkin.addPage();
+        newPageAction.onAddPage(tabbedPane);
     }
 
     public void addPage(Page page) {
-        multiPageDisplaySkin.addPage(page);
+        tabbedPane.addTab(page.title(), page.icon(), page.component());
     }
 
-    public void replacePage(Page oldPage, Page newPage) {
-        multiPageDisplaySkin.replacePage(oldPage, newPage);
-    }
-
-    public void removePage(Page page) {
-        multiPageDisplaySkin.removePage(page);
-    }
-
-    public Page getSelectedPage() {
-        return selectedPage.get();
-    }
-
-    public ObjectProperty<Page> selectedPageProperty() {
-        return selectedPage;
-    }
-
-    public NewPageAction getNewPageAction() {
-        return newPageAction;
-    }
-
-    public void setSelectedPage(Page selectedPage) {
-        this.selectedPage.set(selectedPage);
-    }
+//    public void replacePage(Page oldPage, Page newPage) {
+//        multiPageDisplaySkin.replacePage(oldPage, newPage);
+//    }
+//
+//    public void removePage(Page page) {
+//        multiPageDisplaySkin.removePage(page);
+//    }
+//
+//    public Page getSelectedPage() {
+//        return selectedPage.get();
+//    }
+//
+//    public ObjectProperty<Page> selectedPageProperty() {
+//        return selectedPage;
+//    }
+//
+//    public NewPageAction getNewPageAction() {
+//        return newPageAction;
+//    }
+//
+//    public void setSelectedPage(Page selectedPage) {
+//        this.selectedPage.set(selectedPage);
+//    }
 }

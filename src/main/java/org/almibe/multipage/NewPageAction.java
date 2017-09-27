@@ -10,5 +10,5 @@ package org.almibe.multipage;
  * hitting Ctrl+T, or programmatically by calling multiPageDisplay.addPage()
  */
 public interface NewPageAction {
-    void onAddPage(MultiPageDisplay multiPageDisplay);
+    void onAddPage(DnDTabbedPane multiPageDisplay);
 }
