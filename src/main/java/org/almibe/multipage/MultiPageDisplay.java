@@ -4,16 +4,16 @@
 
 package org.almibe.multipage;
 
+import javax.swing.*;
+
 public class MultiPageDisplay {
-    private final NewPageAction newPageAction;
     private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
 
-    public MultiPageDisplay(NewPageAction newPageAction) {
-        this.newPageAction = newPageAction;
+    public MultiPageDisplay() {
     }
 
-    public void addPage() {
-        newPageAction.onAddPage(tabbedPane);
+    public JComponent getComponent() {
+        return tabbedPane;
     }
 
     public void addPage(Page page) {

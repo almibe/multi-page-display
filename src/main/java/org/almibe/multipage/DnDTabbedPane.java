@@ -29,7 +29,7 @@ public class DnDTabbedPane extends JTabbedPane {
     private TabAcceptor m_acceptor = null;
 
     public DnDTabbedPane() {
-        super();
+        super(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         final DragSourceListener dsl = new DragSourceListener() {
             public void dragEnter(DragSourceDragEvent e) {
                 e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
