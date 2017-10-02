@@ -4,8 +4,12 @@
 
 package org.almibe.multipage.demo;
 
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import org.almibe.multipage.MultiPageDisplay;
 import org.almibe.multipage.Page;
 import org.almibe.multipage.PageBuilder;
@@ -34,13 +38,18 @@ public class MultiPageDisplayDemo {
         });
     }
 
-    public static MultiPageDisplay create() {
+    private static MultiPageDisplay create() {
         MultiPageDisplay multiPageDisplay = new MultiPageDisplay();
 
         Page page = new PageBuilder()
             .setTitle("Hello Demo 1")
             .setIcon(createImageView())
             .setContent(new JLabel("Hello Demo Content")).createPage();
+
+        Page pagefx = new PageBuilder()
+            .setTitle("Java FX Example")
+            .setIcon(createImageView())
+            .setContent(createJavaFXContent()).createPage();
 
         Page page2 = new PageBuilder()
             .setTitle("Hello Demo 2")
@@ -83,18 +92,31 @@ public class MultiPageDisplayDemo {
             .setIcon(createImageView())
             .setContent(new JLabel("Test")).createPage();
 
-        Arrays.asList(page, page2, page3, page4, page5, page6).forEach(it -> multiPageDisplay.addPage(it));
+        Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach(it -> multiPageDisplay.addPage(it));
 
         return multiPageDisplay;
     }
 
-    static ImageIcon createImageView() {
+    private static ImageIcon createImageView() {
         return new ImageIcon(MultiPageDisplayDemo.class.getResource("page_white_text.png"));
     }
 
-    static JPanel createPanel() {
+    private static JPanel createJavaFXContent() {
         JPanel panel = new JPanel();
-        panel.add(new JLabel("Hey Content"));
+        JFXPanel jfxPanel = new JFXPanel();
+
+        panel.add(jfxPanel);
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
         return panel;
+    }
+
+    private static Scene createScene() {
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        TextArea text = new TextArea("Sample text");
+
+        root.getChildren().add(text);
+        return scene;
     }
 }

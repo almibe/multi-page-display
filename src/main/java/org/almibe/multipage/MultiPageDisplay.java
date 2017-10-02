@@ -4,20 +4,84 @@
 
 package org.almibe.multipage;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.UUID;
 
 public class MultiPageDisplay {
-    private final DnDTabbedPane tabbedPane = new DnDTabbedPane();
+    private final JPanel container = new JPanel(new BorderLayout());
+    private final JPanel header = new JPanel();
+    private final CardLayout bodyLayout = new CardLayout();
+    private final JPanel body = new JPanel(bodyLayout);
+    private final BiMap<String, Page> pages = HashBiMap.create();
 
     public MultiPageDisplay() {
+        header.setLayout(new BoxLayout(header, BoxLayout.X_AXIS));
+        container.add(header, BorderLayout.NORTH);
+        container.add(body, BorderLayout.CENTER);
     }
 
     public JComponent getComponent() {
-        return tabbedPane;
+        return container;
     }
 
     public void addPage(Page page) {
-        tabbedPane.addTab(page.title(), page.icon(), page.component());
+        final String id = UUID.randomUUID().toString();
+        pages.put(id, page);
+        header.add(createTabComponent(page, id));
+        body.add(page.component(), id);
+    }
+
+    private JPanel createTabComponent(Page page, String id) {
+        final JPanel panel = new JPanel(new BorderLayout());
+        final JButton closeButton = new JButton("X");
+        panel.add(new JLabel(page.icon()), BorderLayout.WEST);
+        panel.add(new JLabel(page.title()), BorderLayout.CENTER);
+        panel.add(closeButton, BorderLayout.EAST);
+
+        closeButton.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> {
+                pages.remove(id);
+                body.remove(page.component());
+                header.remove(panel);
+                header.validate();
+                header.repaint();
+            });
+        });
+
+        panel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                bodyLayout.show(body, pages.inverse().get(page));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        return panel;
     }
 
 //    public void replacePage(Page oldPage, Page newPage) {
