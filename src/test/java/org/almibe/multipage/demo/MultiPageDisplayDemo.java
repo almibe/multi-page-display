@@ -94,7 +94,20 @@ public class MultiPageDisplayDemo {
 
         Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach(it -> multiPageDisplay.addPage(it));
 
+        for (int x = 0; x < 20; x++) {
+            multiPageDisplay.addPage(createAnonPage());
+        }
+
         return multiPageDisplay;
+    }
+
+    private static int x = 0;
+
+    private static Page createAnonPage() {
+        return new PageBuilder()
+            .setTitle("Anon " + ++x)
+            .setIcon(createImageView())
+            .setContent(new JLabel("Hello Demo Content " + x)).createPage();
     }
 
     private static ImageIcon createImageView() {

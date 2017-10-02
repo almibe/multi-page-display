@@ -8,6 +8,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -39,20 +40,45 @@ public class MultiPageDisplay {
 
     private JPanel createTabComponent(Page page, String id) {
         final JPanel panel = new JPanel(new BorderLayout());
-        final JButton closeButton = new JButton("X");
+        final JLabel closeButton = new JLabel(createCloseImage());
+        closeButton.setBorder(new LineBorder(Color.BLACK, 1));
         panel.add(new JLabel(page.icon()), BorderLayout.WEST);
         panel.add(new JLabel(page.title()), BorderLayout.CENTER);
         panel.add(closeButton, BorderLayout.EAST);
 
-        closeButton.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> {
-                pages.remove(id);
-                body.remove(page.component());
-                header.remove(panel);
-                header.validate();
-                header.repaint();
-            });
+        closeButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    pages.remove(id);
+                    body.remove(page.component());
+                    header.remove(panel);
+                    header.validate();
+                    header.repaint();
+                });
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
         });
+
 
         panel.addMouseListener(new MouseListener() {
             @Override
@@ -82,6 +108,10 @@ public class MultiPageDisplay {
         });
 
         return panel;
+    }
+
+    private ImageIcon createCloseImage() {
+        return new ImageIcon(MultiPageDisplay.class.getResource("material/ic_close_black_18dp.png"));
     }
 
 //    public void replacePage(Page oldPage, Page newPage) {
