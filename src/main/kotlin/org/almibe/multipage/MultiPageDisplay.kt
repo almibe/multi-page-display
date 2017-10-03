@@ -18,6 +18,7 @@ class MultiPageDisplay {
 
     private val container = JPanel(BorderLayout())
     private val header = JPanel()
+    private val headerViewPort = JViewport()
     private val bodyLayout = CardLayout()
     private val body = JPanel(bodyLayout)
     private val pages = arrayListOf<PageData>()
@@ -27,7 +28,8 @@ class MultiPageDisplay {
 
     init {
         header.layout = BoxLayout(header, BoxLayout.X_AXIS)
-        container.add(header, BorderLayout.NORTH)
+        headerViewPort.view = header
+        container.add(headerViewPort, BorderLayout.NORTH)
         container.add(body, BorderLayout.CENTER)
     }
 
