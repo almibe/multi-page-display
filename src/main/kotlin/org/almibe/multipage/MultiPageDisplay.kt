@@ -21,7 +21,6 @@ class MultiPageDisplay {
     private val bodyLayout = CardLayout()
     private val body = JPanel(bodyLayout)
     private val pages = arrayListOf<PageData>()
-    private val tabComponents = ArrayList<JPanel>()
 
     val component: JComponent
         get() = container
@@ -38,7 +37,6 @@ class MultiPageDisplay {
 
         pages.add(PageData(id, page, tabComponent))
         header.add(tabComponent)
-        tabComponents.add(tabComponent)
         body.add(page.component(), id)
     }
 
@@ -55,7 +53,6 @@ class MultiPageDisplay {
                 SwingUtilities.invokeLater {
                     pages.removeIf { page -> page.id == id }
                     body.remove(page.component())
-                    tabComponents.remove(panel)
                     header.remove(panel)
                     header.validate()
                     header.repaint()
@@ -72,7 +69,9 @@ class MultiPageDisplay {
             override fun mouseClicked(e: MouseEvent) {
                 val pageId = pages.first { it.page == page }.id
                 bodyLayout.show(body, pageId)
-                tabComponents.forEach { jPanel -> jPanel.background = Color(206, 206, 206) }
+                pages.forEach {
+                    page -> page.tabComponent.background = Color(206,206,206)
+                }
                 panel.background = Color.WHITE
             }
 
