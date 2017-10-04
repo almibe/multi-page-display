@@ -9,6 +9,7 @@ import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.control.TextArea
 import org.almibe.multipage.MultiPageDisplay
+import org.almibe.multipage.NewPageAction
 import org.almibe.multipage.Page
 import org.almibe.multipage.PageBuilder
 import java.util.*
@@ -36,7 +37,12 @@ object MultiPageDisplayDemo {
     }
 
     private fun create(): MultiPageDisplay {
-        val multiPageDisplay = MultiPageDisplay()
+        val multiPageDisplay = MultiPageDisplay(NewPageAction {
+            PageBuilder()
+                .setTitle("Hello Demo 1")
+                .setIcon(createImageView())
+                .setContent(JLabel("Hello Demo Content")).createPage()
+        })
 
         val page = PageBuilder()
                 .setTitle("Hello Demo 1")
