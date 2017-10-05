@@ -13,7 +13,7 @@ import javax.swing.*
 import javax.swing.border.EmptyBorder
 import javax.swing.border.LineBorder
 
-class MultiPageDisplay(val newPageAction: NewPageAction) {
+class MultiPageDisplay(private val newPageAction: () -> Page) {
     private data class PageData(val id: String, val page: Page, val tabComponent: JPanel)
 
     private val container = JPanel(BorderLayout())
@@ -48,7 +48,7 @@ class MultiPageDisplay(val newPageAction: NewPageAction) {
     }
 
     fun newPage() {
-        val page = newPageAction.createPage()
+        val page = newPageAction()
         addPage(page)
         selectPage(page)
     }
