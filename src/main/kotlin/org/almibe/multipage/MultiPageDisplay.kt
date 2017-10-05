@@ -79,7 +79,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
             val pageData = PageData(id, page, tabComponent)
             pages.add(pageData)
             tabPanel.add(tabComponent)
-            body.add(page.component(), id)
+            body.add(page.component, id)
 
             if (pages.size == 1) {
                 selectPage(pageData)
@@ -96,19 +96,19 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         closeButton.background = Color.WHITE
         closeButtonPanel.isOpaque = false
         closeButtonPanel.add(closeButton)
-        val icon = if (page.icon() != null) {
-            JLabel(page.icon())
+        val icon = if (page.icon != null) {
+            JLabel(page.icon)
         } else {
             JLabel()
         }
         icon.border = EmptyBorder(10, 10, 10, 10)
         panel.add(icon, BorderLayout.WEST)
-        panel.add(JLabel(page.title()), BorderLayout.CENTER)
+        panel.add(JLabel(page.title), BorderLayout.CENTER)
         panel.add(closeButtonPanel, BorderLayout.EAST)
 
         closeButton.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent) {
-                val allowClose = page.allowClose()
+                val allowClose = page.allowClose
                 if (allowClose != null) {
                     if(allowClose()) {
                         removePage(page)
@@ -195,7 +195,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     fun showDropDown() {
         val menu = JPopupMenu()
         pages.forEach {
-            val menuItem = JMenuItem(it.page.title())
+            val menuItem = JMenuItem(it.page.title)
             menuItem.addActionListener { _ ->
                 selectPage(it)
             }
@@ -235,7 +235,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     fun removePage(page: Page?) {
         if (page != null) {
             SwingUtilities.invokeLater {
-                val pageToRemove = pages.first { pageData -> pageData.page.component() == page.component() }
+                val pageToRemove = pages.first { pageData -> pageData.page.component == page.component }
                 if (pageToRemove == selectedPage) {
                     if (selectedPage == pages.last() && pages.size > 1) {
                         selectPage(pages[pages.lastIndex-1])
@@ -246,7 +246,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
                     }
                 }
                 pages.remove(pageToRemove)
-                body.remove(pageToRemove.page.component())
+                body.remove(pageToRemove.page.component)
                 tabPanel.remove(pageToRemove.tabComponent)
                 tabPanel.validate()
                 tabPanel.repaint()

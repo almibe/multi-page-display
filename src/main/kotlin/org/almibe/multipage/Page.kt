@@ -8,10 +8,10 @@ import java.awt.KeyEventDispatcher
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
-interface Page {
-    fun component(): JComponent
-    fun title(): String
-    fun icon(): ImageIcon?
-    fun allowClose(): (() -> Boolean)?
-    fun keyEventDispatcher(): KeyEventDispatcher?
-}
+class Page (
+    val component: JComponent,
+    val title: String,
+    val icon: ImageIcon?,
+    val allowClose: (() -> Boolean)?,
+    val keyEventDispatcher: KeyEventDispatcher?
+)

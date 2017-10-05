@@ -41,26 +41,6 @@ class PageBuilder {
     }
 
     fun createPage(): Page {
-        return object : Page {
-            override fun component(): JComponent {
-                return content!!
-            }
-
-            override fun title(): String {
-                return title!!
-            }
-
-            override fun icon(): ImageIcon? {
-                return icon
-            }
-
-            override fun allowClose(): (() -> Boolean)? {
-                return allowClose
-            }
-
-            override fun keyEventDispatcher(): KeyEventDispatcher? {
-                return keyEventDispatcher
-            }
-        }
+        return Page(content!!, title!!, icon, allowClose, keyEventDispatcher)
     }
 }
