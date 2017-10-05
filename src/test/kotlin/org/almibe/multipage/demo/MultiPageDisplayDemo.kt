@@ -14,6 +14,8 @@ import org.almibe.multipage.PageBuilder
 import java.util.*
 import javax.swing.*
 
+
+
 object MultiPageDisplayDemo {
 
     @JvmStatic
@@ -38,7 +40,7 @@ object MultiPageDisplayDemo {
     private fun create(): MultiPageDisplay {
         val multiPageDisplay = MultiPageDisplay {
                 PageBuilder()
-                        .setTitle("Hello Demo 1")
+                        .setTitle("Hello Demo")
                         .setIcon(createImageView())
                         .setContent(JLabel("Hello Demo Content")).createPage()
 
@@ -47,7 +49,7 @@ object MultiPageDisplayDemo {
         val page = PageBuilder()
                 .setTitle("Hello Demo 1")
                 .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content")).createPage()
+                .setContent(JLabel("Hello Demo Content 2")).createPage()
 
         val pagefx = PageBuilder()
                 .setTitle("Java FX Example")
@@ -56,45 +58,33 @@ object MultiPageDisplayDemo {
 
         val page2 = PageBuilder()
                 .setTitle("Hello No Icon 2")
-                .setContent(JTextField("Hello Demo Content?")).createPage()
+                .setContent(JTextField("Hello Demo Content 2?")).createPage()
 
         val page3 = PageBuilder()
                 .setTitle("Hello Demo 3")
                 .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content!")).createPage()
+                .setContent(JLabel("Hello Demo Content 3!")).createPage()
 
         val page4 = PageBuilder()
                 .setTitle("Hello Demo 4")
                 .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content?!?!!")).createPage()
+                .setContent(JLabel("Hello Demo Content 4?!?!!")).createPage()
 
-//        val page5 = PageBuilder()
-//                .setTitle("Prompt to close")
-//                .setIcon(createImageView())
-//                .setContent(JLabel("Click yes to close"))
-//                .setAllowClose {
-//                    val alert = Alert(Alert.AlertType.CONFIRMATION)
-//                    alert.title = "Close Tab?"
-//                    alert.headerText = "Do you want to close this tab?"
-//                    val result = alert.showAndWait()
-//                    if (result.get() != ButtonType.OK) {
-//                        return false
-//                    }
-//                    return true
-//                }).createPage()
-
-        //            VBox node = new VBox(new Label("Test"));
-        //            node.setMaxHeight(Double.MAX_VALUE);
-        //            node.setMaxWidth(Double.MAX_VALUE);
-        //            VBox.setVgrow(node, Priority.ALWAYS);
-        //            node.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        val page5 = PageBuilder()
+                .setTitle("Prompt to close")
+                .setIcon(createImageView())
+                .setContent(JLabel("Click yes to close"))
+                .setAllowClose {
+                    val reply = JOptionPane.showConfirmDialog(null, "Close tab?", "Close tab?", JOptionPane.YES_NO_OPTION)
+                    reply == JOptionPane.YES_OPTION
+                }.createPage()
 
         val page6 = PageBuilder()
                 .setTitle("Test")
                 .setIcon(createImageView())
                 .setContent(JLabel("Test")).createPage()
 
-        Arrays.asList(page, page2, page3, page4, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
+        Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
 
         for (x in 0..19) {
             multiPageDisplay.addPage(createAnonPage())

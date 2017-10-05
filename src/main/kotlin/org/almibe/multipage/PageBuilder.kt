@@ -4,8 +4,7 @@
 
 package org.almibe.multipage
 
-import javafx.scene.input.KeyCombination
-import java.util.concurrent.Callable
+import java.awt.KeyEventDispatcher
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
@@ -13,8 +12,8 @@ class PageBuilder {
     private var content: JComponent? = null
     private var title: String? = null
     private var icon: ImageIcon? = null
-    private var allowClose: Callable<Boolean>? = null
-    private var accelerators: Map<KeyCombination, Runnable>? = null
+    private var allowClose: (() -> Boolean)? = null
+    private var keyEventDispatcher: KeyEventDispatcher? = null
 
     fun setContent(content: JComponent): PageBuilder {
         this.content = content
@@ -31,13 +30,13 @@ class PageBuilder {
         return this
     }
 
-    fun setAllowClose(allowClose: Callable<Boolean>): PageBuilder {
+    fun setAllowClose(allowClose: () -> Boolean): PageBuilder {
         this.allowClose = allowClose
         return this
     }
 
-    fun setAccelerators(accelerators: Map<KeyCombination, Runnable>): PageBuilder {
-        this.accelerators = accelerators
+    fun setKeyEventDispatcher(keyEventDispatcher: KeyEventDispatcher): PageBuilder {
+        this.keyEventDispatcher = keyEventDispatcher
         return this
     }
 
@@ -55,12 +54,12 @@ class PageBuilder {
                 return icon
             }
 
-            override fun allowClose(): Callable<Boolean>? {
+            override fun allowClose(): (() -> Boolean)? {
                 return allowClose
             }
 
-            override fun accelerators(): Map<KeyCombination, Runnable>? {
-                return accelerators
+            override fun keyEventDispatcher(): KeyEventDispatcher? {
+                return keyEventDispatcher
             }
         }
     }

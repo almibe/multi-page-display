@@ -4,8 +4,7 @@
 
 package org.almibe.multipage
 
-import javafx.scene.input.KeyCombination
-import java.util.concurrent.Callable
+import java.awt.KeyEventDispatcher
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
@@ -13,6 +12,6 @@ interface Page {
     fun component(): JComponent
     fun title(): String
     fun icon(): ImageIcon?
-    fun allowClose(): Callable<Boolean>?
-    fun accelerators(): Map<KeyCombination, Runnable>?
+    fun allowClose(): (() -> Boolean)?
+    fun keyEventDispatcher(): KeyEventDispatcher?
 }

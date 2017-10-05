@@ -4,10 +4,8 @@
 
 package org.almibe.multipage
 
-import java.awt.BorderLayout
-import java.awt.CardLayout
-import java.awt.Color
-import java.awt.Point
+import java.awt.*
+import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
@@ -31,12 +29,23 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     private val body = JPanel(bodyLayout)
     private val pages = arrayListOf<PageData>()
 
+    private var selectedPage: PageData? = null
+    private var dragPanel: JPanel? = null
+    private var previousPanel: JPanel? = null
+
     val component: JComponent
         get() = container
 
     init {
         tabPanel.layout = BoxLayout(tabPanel, BoxLayout.X_AXIS)
         tabPanelViewPort.view = tabPanel
+        tabPanelViewPort.addMouseWheelListener { e ->
+            val newX = tabPanelViewPort.viewPosition.x + e.unitsToScroll*2
+            if (newX > 0 && newX < tabPanel.width) {
+                tabPanelViewPort.viewPosition = Point(newX, 0)
+                tabPanelViewPort.updateUI()
+            }
+        }
 
         dropDownButton.addMouseListener(DropDownListener(this))
         addButton.addMouseListener(AddTabListener(this))
@@ -49,6 +58,8 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
         container.add(header, BorderLayout.NORTH)
         container.add(body, BorderLayout.CENTER)
+
+        setupKeyboardShortcuts()
     }
 
     fun newPage() {
@@ -92,12 +103,13 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
         closeButton.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent) {
-                SwingUtilities.invokeLater {
-                    pages.removeIf { page -> page.id == id }
-                    body.remove(page.component())
-                    tabPanel.remove(panel)
-                    tabPanel.validate()
-                    tabPanel.repaint()
+                val allowClose = page.allowClose()
+                if (allowClose != null) {
+                    if(allowClose()) {
+                        removePage(page)
+                    }
+                } else {
+                    removePage(page)
                 }
             }
 
@@ -112,13 +124,31 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
                 selectPage(page)
             }
 
-            override fun mousePressed(e: MouseEvent) {}
-            override fun mouseReleased(e: MouseEvent) {}
-            override fun mouseEntered(e: MouseEvent) {}
+            override fun mousePressed(e: MouseEvent) {
+                dragPanel = panel
+            }
+            override fun mouseReleased(e: MouseEvent) {
+                dragPanel = null
+            }
+            override fun mouseEntered(e: MouseEvent) {
+                if (dragPanel != null && dragPanel != panel && panel != previousPanel) {
+                    handleTabDrag(panel)
+                }
+                previousPanel = panel
+            }
             override fun mouseExited(e: MouseEvent) {}
         })
 
         return panel
+    }
+
+    private fun handleTabDrag(panel: JPanel) {
+        SwingUtilities.invokeLater {
+            val panelIndex = tabPanel.components.indexOf(panel)
+            tabPanel.remove(dragPanel)
+            tabPanel.add(dragPanel, panelIndex)
+            tabPanel.updateUI()
+        }
     }
 
     private fun createCloseImage(): ImageIcon {
@@ -178,6 +208,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
     private fun selectPage(pageData: PageData) {
         SwingUtilities.invokeLater {
+            selectedPage = pageData
             val pageId = pageData.id
             val tabComponent = pageData.tabComponent
             bodyLayout.show(body, pageId)
@@ -196,7 +227,75 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
-    fun removePage(page: Page) {
-        TODO()
+    fun removePage(page: Page?) {
+        if (page != null) {
+            SwingUtilities.invokeLater {
+                val pageToRemove = pages.first { pageData -> pageData.page.component() == page.component() }
+                if (pageToRemove == selectedPage) {
+                    if (selectedPage == pages.last() && pages.size > 1) {
+                        selectPage(pages[pages.lastIndex-1])
+                    } else if (pages.size > 1) {
+                        selectPage(pages[pages.indexOf(selectedPage!!) + 1])
+                    } else {
+                        selectedPage = null
+                    }
+                }
+                pages.remove(pageToRemove)
+                body.remove(pageToRemove.page.component())
+                tabPanel.remove(pageToRemove.tabComponent)
+                tabPanel.validate()
+                tabPanel.repaint()
+            }
+        }
+    }
+
+    private fun setupKeyboardShortcuts() {
+        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher { e ->
+            println(e.id == KeyEvent.KEY_PRESSED)
+            println(e.isControlDown)
+            if (e.id == KeyEvent.KEY_PRESSED && e.isControlDown) {
+                if (e.keyCode == KeyEvent.VK_T) {
+                    newPage()
+                    true
+                } else if (e.keyCode == KeyEvent.VK_W) {
+                    removePage(selectedPage?.page)
+                    true
+                } else if (e.keyCode == KeyEvent.VK_TAB && e.isShiftDown) {
+                    selectPrevPage()
+                    true
+                } else if (e.keyCode == KeyEvent.VK_TAB) {
+                    selectNextPage()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun selectNextPage() {
+        if (pages.isNotEmpty()) {
+            SwingUtilities.invokeLater {
+                if (selectedPage == null || selectedPage == pages.last()) {
+                    selectPage(pages.first())
+                } else {
+                    selectPage(pages[pages.indexOf(selectedPage!!) + 1])
+                }
+            }
+        }
+    }
+
+    private fun selectPrevPage() {
+        if (pages.isNotEmpty()) {
+            SwingUtilities.invokeLater {
+                if (selectedPage == null || selectedPage == pages.first()) {
+                    selectPage(pages.last())
+                } else {
+                    selectPage(pages[pages.indexOf(selectedPage!!) - 1])
+                }
+            }
+        }
     }
 }
