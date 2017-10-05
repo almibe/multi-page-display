@@ -55,8 +55,7 @@ object MultiPageDisplayDemo {
                 .setContent(createJavaFXContent()).createPage()
 
         val page2 = PageBuilder()
-                .setTitle("Hello Demo 2")
-                .setIcon(createImageView())
+                .setTitle("Hello No Icon 2")
                 .setContent(JTextField("Hello Demo Content?")).createPage()
 
         val page3 = PageBuilder()

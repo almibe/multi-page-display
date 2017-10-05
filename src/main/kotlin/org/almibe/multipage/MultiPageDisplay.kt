@@ -4,11 +4,15 @@
 
 package org.almibe.multipage
 
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.CardLayout
+import java.awt.Color
+import java.awt.Point
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import java.util.*
+import javax.imageio.ImageIO
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 import javax.swing.border.LineBorder
@@ -76,8 +80,12 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         closeButton.background = Color.WHITE
         closeButtonPanel.isOpaque = false
         closeButtonPanel.add(closeButton)
-        val icon = JLabel(page.icon())
-        icon.border = EmptyBorder(10,10,10,10)
+        val icon = if (page.icon() != null) {
+            JLabel(page.icon())
+        } else {
+            JLabel()
+        }
+        icon.border = EmptyBorder(10, 10, 10, 10)
         panel.add(icon, BorderLayout.WEST)
         panel.add(JLabel(page.title()), BorderLayout.CENTER)
         panel.add(closeButtonPanel, BorderLayout.EAST)
@@ -110,29 +118,31 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
             override fun mouseExited(e: MouseEvent) {}
         })
 
-        SwingUtilities.invokeLater {
-            if (closeButtonPanel.width > closeButtonPanel.height) {
-                closeButtonPanel.minimumSize = Dimension(closeButtonPanel.width, closeButtonPanel.width)
-                closeButtonPanel.preferredSize = Dimension(closeButtonPanel.width, closeButtonPanel.width)
-            } else {
-                closeButtonPanel.minimumSize = Dimension(closeButtonPanel.height, closeButtonPanel.height)
-                closeButtonPanel.preferredSize = Dimension(closeButtonPanel.height, closeButtonPanel.height)
-            }
-        }
-
         return panel
     }
 
     private fun createCloseImage(): ImageIcon {
-        return ImageIcon(MultiPageDisplay::class.java.getResource("material/ic_close_black_18dp.png"))
+        try {
+            return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_close_black_18dp.png")))
+        } catch (ex: Exception) {
+            throw RuntimeException(ex)
+        }
     }
 
     private fun createDownArrowImage(): ImageIcon {
-        return ImageIcon(MultiPageDisplay::class.java.getResource("material/ic_keyboard_arrow_down_black_24dp.png"))
+        try {
+            return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_keyboard_arrow_down_black_24dp.png")))
+        } catch (ex: Exception) {
+            throw RuntimeException(ex)
+        }
     }
 
     private fun createAddImage(): ImageIcon {
-        return ImageIcon(MultiPageDisplay::class.java.getResource("material/ic_add_black_24dp.png"))
+        try {
+            return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_add_black_24dp.png")))
+        } catch (ex: Exception) {
+            throw RuntimeException(ex)
+        }
     }
 
     private class DropDownListener(val multiPageDisplay: MultiPageDisplay): MouseAdapter() {
