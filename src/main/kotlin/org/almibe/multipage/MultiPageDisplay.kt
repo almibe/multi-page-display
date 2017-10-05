@@ -251,8 +251,6 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
     private fun setupKeyboardShortcuts() {
         DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher { e ->
-            println(e.id == KeyEvent.KEY_PRESSED)
-            println(e.isControlDown)
             if (e.id == KeyEvent.KEY_PRESSED && e.isControlDown) {
                 if (e.keyCode == KeyEvent.VK_T) {
                     newPage()
