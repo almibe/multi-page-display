@@ -30,7 +30,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     private val pages = arrayListOf<PageData>()
 
     private var selectedPage: PageData? = null
-    private var dragPanel: JPanel? = null
+    private var dragPage: PageData? = null
     private var previousPanel: JPanel? = null
 
     val component: JComponent
@@ -74,11 +74,9 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
             selectPage(existingPage)
         } else {
             val id = UUID.randomUUID().toString()
-            val tabComponent = createTabComponent(page, id)
-
-            val pageData = PageData(id, page, tabComponent)
+            val pageData = createTabComponent(page, id)
             pages.add(pageData)
-            tabPanel.add(tabComponent)
+            tabPanel.add(pageData.tabComponent)
             body.add(page.component, id)
 
             if (pages.size == 1) {
@@ -87,7 +85,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
-    private fun createTabComponent(page: Page, id: String): JPanel {
+    private fun createTabComponent(page: Page, id: String): PageData {
         val panel = JPanel(BorderLayout())
         val closeButton = JLabel(createCloseImage())
         val closeButtonPanel = JPanel()
@@ -105,6 +103,8 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         panel.add(icon, BorderLayout.WEST)
         panel.add(JLabel(page.title), BorderLayout.CENTER)
         panel.add(closeButtonPanel, BorderLayout.EAST)
+
+        val pageData = PageData(id, page, panel)
 
         closeButton.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent) {
@@ -130,28 +130,30 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
             }
 
             override fun mousePressed(e: MouseEvent) {
-                dragPanel = panel
+                dragPage = pageData
             }
             override fun mouseReleased(e: MouseEvent) {
-                dragPanel = null
+                dragPage = null
             }
             override fun mouseEntered(e: MouseEvent) {
-                if (dragPanel != null && dragPanel != panel && panel != previousPanel) {
-                    handleTabDrag(panel)
+                if (dragPage != null && dragPage?.tabComponent != panel && panel != previousPanel) {
+                    handleTabDrag(pageData)
                 }
                 previousPanel = panel
             }
             override fun mouseExited(e: MouseEvent) {}
         })
 
-        return panel
+        return pageData
     }
 
-    private fun handleTabDrag(panel: JPanel) {
+    private fun handleTabDrag(panel: PageData) {
         SwingUtilities.invokeLater {
-            val panelIndex = tabPanel.components.indexOf(panel)
-            tabPanel.remove(dragPanel)
-            tabPanel.add(dragPanel, panelIndex)
+            val panelIndex = tabPanel.components.indexOf(panel.tabComponent)
+            tabPanel.remove(dragPage?.tabComponent)
+            pages.remove(dragPage)
+            tabPanel.add(dragPage?.tabComponent, panelIndex)
+            pages.add(panelIndex, dragPage!!)
             tabPanel.updateUI()
         }
     }

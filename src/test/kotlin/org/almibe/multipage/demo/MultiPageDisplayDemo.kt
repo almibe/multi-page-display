@@ -16,8 +16,6 @@ import java.awt.event.KeyEvent
 import java.util.*
 import javax.swing.*
 
-
-
 object MultiPageDisplayDemo {
 
     @JvmStatic
@@ -41,56 +39,55 @@ object MultiPageDisplayDemo {
 
     private fun create(): MultiPageDisplay {
         val multiPageDisplay = MultiPageDisplay {
-                PageBuilder()
-                        .setTitle("Hello Demo")
-                        .setIcon(createImageView())
-                        .setContent(JLabel("Hello Demo Content")).createPage()
-
+            PageBuilder()
+                .setTitle("Hello Demo")
+                .setIcon(createImageView())
+                .setContent(JLabel("Hello Demo Content")).createPage()
         }
 
         val page = PageBuilder()
-                .setTitle("Hello Demo 1")
-                .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content 2")).createPage()
+            .setTitle("Hello Demo 1")
+            .setIcon(createImageView())
+            .setContent(JLabel("Hello Demo Content 2")).createPage()
 
         val pagefx = PageBuilder()
-                .setTitle("Java FX Example")
-                .setIcon(createImageView())
-                .setContent(createJavaFXContent()).createPage()
+            .setTitle("Java FX Example")
+            .setIcon(createImageView())
+            .setContent(createJavaFXContent()).createPage()
 
         val page2 = PageBuilder()
-                .setTitle("Hello No Icon 2")
-                .setContent(JTextField("Hello Demo Content 2?")).createPage()
+            .setTitle("Hello No Icon 2")
+            .setContent(JTextField("Hello Demo Content 2?")).createPage()
 
         val page3 = PageBuilder()
-                .setTitle("Hello Demo 3")
-                .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content 3!")).createPage()
+            .setTitle("Hello Demo 3")
+            .setIcon(createImageView())
+            .setContent(JLabel("Hello Demo Content 3!")).createPage()
 
         val page4 = PageBuilder()
-                .setTitle("Hello Demo 4")
-                .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content 4?!?!!")).createPage()
+            .setTitle("Hello Demo 4")
+            .setIcon(createImageView())
+            .setContent(JLabel("Hello Demo Content 4?!?!!")).createPage()
 
         val page5 = PageBuilder()
-                .setTitle("Prompt to close")
-                .setIcon(createImageView())
-                .setContent(JLabel("Click yes to close"))
-                .setAllowClose {
-                    val reply = JOptionPane.showConfirmDialog(null, "Close tab?", "Close tab?", JOptionPane.YES_NO_OPTION)
-                    reply == JOptionPane.YES_OPTION
-                }.createPage()
+            .setTitle("Prompt to close")
+            .setIcon(createImageView())
+            .setContent(JLabel("Click yes to close"))
+            .setAllowClose {
+                val reply = JOptionPane.showConfirmDialog(null, "Close tab?", "Close tab?", JOptionPane.YES_NO_OPTION)
+                reply == JOptionPane.YES_OPTION
+            }.createPage()
 
         val page6 = PageBuilder()
-                .setTitle("Test")
-                .setIcon(createImageView())
-                .setContent(JLabel("Press W"))
-                .setKeyEventDispatcher(KeyEventDispatcher { e ->
-                    if (e.keyCode == KeyEvent.VK_W) {
-                        println("You Pressed W")
-                    }
-                    true
-                }).createPage()
+            .setTitle("Test")
+            .setIcon(createImageView())
+            .setContent(JLabel("Press W"))
+            .setKeyEventDispatcher(KeyEventDispatcher { e ->
+                if (e.keyCode == KeyEvent.VK_W) {
+                    println("You Pressed W")
+                }
+                true
+            }).createPage()
 
         Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
 
@@ -104,9 +101,9 @@ object MultiPageDisplayDemo {
     private var x = 0
     private fun createAnonPage(): Page {
         return PageBuilder()
-                .setTitle("Anon " + ++x)
-                .setIcon(createImageView())
-                .setContent(JLabel("Hello Demo Content " + x)).createPage()
+            .setTitle("Anon " + ++x)
+            .setIcon(createImageView())
+            .setContent(JLabel("Hello Demo Content " + x)).createPage()
     }
 
     private fun createImageView(): ImageIcon {
