@@ -12,7 +12,7 @@ import javax.swing.JComponent
 interface Page {
     fun component(): JComponent
     fun title(): String
-    fun icon(): ImageIcon
-    fun allowClose(): Callable<Boolean>
-    fun accelerators(): Map<KeyCombination, Runnable>
+    fun icon(): ImageIcon?
+    fun allowClose(): Callable<Boolean>?
+    fun accelerators(): Map<KeyCombination, Runnable>?
 }

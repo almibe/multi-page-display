@@ -51,16 +51,16 @@ class PageBuilder {
                 return title!!
             }
 
-            override fun icon(): ImageIcon {
-                return icon!!
+            override fun icon(): ImageIcon? {
+                return icon
             }
 
-            override fun allowClose(): Callable<Boolean> {
-                return allowClose!!
+            override fun allowClose(): Callable<Boolean>? {
+                return allowClose
             }
 
-            override fun accelerators(): Map<KeyCombination, Runnable> {
-                return accelerators!!
+            override fun accelerators(): Map<KeyCombination, Runnable>? {
+                return accelerators
             }
         }
     }
