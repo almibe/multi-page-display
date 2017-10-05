@@ -256,25 +256,41 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
     private fun setupKeyboardShortcuts() {
         DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher { e ->
-            if (e.id == KeyEvent.KEY_PRESSED && e.isControlDown) {
-                if (e.keyCode == KeyEvent.VK_T) {
-                    newPage()
-                    true
-                } else if (e.keyCode == KeyEvent.VK_W) {
-                    removePage(selectedPage?.page)
-                    true
-                } else if (e.keyCode == KeyEvent.VK_TAB && e.isShiftDown) {
-                    selectPrevPage()
-                    true
-                } else if (e.keyCode == KeyEvent.VK_TAB) {
-                    selectNextPage()
-                    true
-                } else {
-                    false
-                }
+            when {
+                standardKeyboardShortcut(e) -> true
+                tabDefinedKeyboardShortcut(e) -> true
+                else -> false
+            }
+        }
+    }
+
+    private fun standardKeyboardShortcut(e: KeyEvent): Boolean {
+        if (e.id == KeyEvent.KEY_PRESSED && e.isControlDown) {
+            return if (e.keyCode == KeyEvent.VK_T) {
+                newPage()
+                true
+            } else if (e.keyCode == KeyEvent.VK_W) {
+                removePage(selectedPage?.page)
+                true
+            } else if (e.keyCode == KeyEvent.VK_TAB && e.isShiftDown) {
+                selectPrevPage()
+                true
+            } else if (e.keyCode == KeyEvent.VK_TAB) {
+                selectNextPage()
+                true
             } else {
                 false
             }
+        } else {
+            return false
+        }
+    }
+
+    private fun tabDefinedKeyboardShortcut(e: KeyEvent): Boolean {
+        return if (selectedPage?.page?.keyEventDispatcher != null) {
+            selectedPage?.page?.keyEventDispatcher!!.dispatchKeyEvent(e)
+        } else {
+            false
         }
     }
 

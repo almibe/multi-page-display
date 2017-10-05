@@ -11,6 +11,8 @@ import javafx.scene.control.TextArea
 import org.almibe.multipage.MultiPageDisplay
 import org.almibe.multipage.Page
 import org.almibe.multipage.PageBuilder
+import java.awt.KeyEventDispatcher
+import java.awt.event.KeyEvent
 import java.util.*
 import javax.swing.*
 
@@ -82,7 +84,13 @@ object MultiPageDisplayDemo {
         val page6 = PageBuilder()
                 .setTitle("Test")
                 .setIcon(createImageView())
-                .setContent(JLabel("Test")).createPage()
+                .setContent(JLabel("Press W"))
+                .setKeyEventDispatcher(KeyEventDispatcher { e ->
+                    if (e.keyCode == KeyEvent.VK_W) {
+                        println("You Pressed W")
+                    }
+                    true
+                }).createPage()
 
         Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
 
