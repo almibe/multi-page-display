@@ -69,16 +69,21 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     }
 
     fun addPage(page: Page) {
-        val id = UUID.randomUUID().toString()
-        val tabComponent = createTabComponent(page, id)
+        val existingPage = pages.find { pageData -> pageData.page == page }
+        if (existingPage != null) {
+            selectPage(existingPage)
+        } else {
+            val id = UUID.randomUUID().toString()
+            val tabComponent = createTabComponent(page, id)
 
-        val pageData = PageData(id, page, tabComponent)
-        pages.add(pageData)
-        tabPanel.add(tabComponent)
-        body.add(page.component(), id)
+            val pageData = PageData(id, page, tabComponent)
+            pages.add(pageData)
+            tabPanel.add(tabComponent)
+            body.add(page.component(), id)
 
-        if (pages.size == 1) {
-            selectPage(pageData)
+            if (pages.size == 1) {
+                selectPage(pageData)
+            }
         }
     }
 
