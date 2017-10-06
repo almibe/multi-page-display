@@ -110,14 +110,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
 
         closeButton.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent) {
-                val allowClose = page.allowClose
-                if (allowClose != null) {
-                    if(allowClose()) {
-                        removePage(page)
-                    }
-                } else {
-                    removePage(page)
-                }
+                checkRemovePage(page)
             }
 
             override fun mousePressed(e: MouseEvent) {}
@@ -236,6 +229,19 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
+    fun checkRemovePage(page: Page?) {
+        if (page != null) {
+            val allowClose = page.allowClose
+            if (allowClose != null) {
+                if (allowClose()) {
+                    removePage(page)
+                }
+            } else {
+                removePage(page)
+            }
+        }
+    }
+
     fun removePage(page: Page?) {
         if (page != null) {
             SwingUtilities.invokeLater {
@@ -274,7 +280,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
                 newPage()
                 true
             } else if (e.keyCode == KeyEvent.VK_W) {
-                removePage(selectedPage?.page)
+                checkRemovePage(selectedPage?.page)
                 true
             } else if (e.keyCode == KeyEvent.VK_TAB && e.isShiftDown) {
                 selectPrevPage()
