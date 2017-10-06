@@ -66,6 +66,8 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         val page = newPageAction()
         addPage(page)
         selectPage(page)
+        tabPanelViewPort.updateUI()
+        body.updateUI()
     }
 
     fun addPage(page: Page) {
