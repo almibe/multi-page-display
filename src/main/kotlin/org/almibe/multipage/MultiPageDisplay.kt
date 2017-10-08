@@ -37,29 +37,32 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         get() = container
 
     init {
-        tabPanel.layout = BoxLayout(tabPanel, BoxLayout.X_AXIS)
-        tabPanelViewPort.view = tabPanel
-        tabPanelViewPort.addMouseWheelListener { e ->
-            val newX = tabPanelViewPort.viewPosition.x + e.unitsToScroll*2
-            if (newX > 0 && newX < tabPanel.width) {
-                tabPanelViewPort.viewPosition = Point(newX, 0)
-                tabPanelViewPort.updateUI()
+        SwingUtilities.invokeLater {
+            tabPanel.layout = BoxLayout(tabPanel, BoxLayout.X_AXIS)
+            tabPanelViewPort.view = tabPanel
+            tabPanelViewPort.addMouseWheelListener { e ->
+                val newX = tabPanelViewPort.viewPosition.x + e.unitsToScroll*2
+                if (newX > 0 && newX < tabPanel.width) {
+                    tabPanelViewPort.viewPosition = Point(newX, 0)
+                    tabPanelViewPort.updateUI()
+                }
             }
+
+            dropDownButton.addMouseListener(DropDownListener(this))
+            addButton.addMouseListener(AddTabListener(this))
+
+            buttonPanel.add(dropDownButton)
+            buttonPanel.add(addButton)
+
+            header.add(tabPanelViewPort, BorderLayout.CENTER)
+            header.add(buttonPanel, BorderLayout.EAST)
+
+            container.add(header, BorderLayout.NORTH)
+            container.add(body, BorderLayout.CENTER)
+
+            setupKeyboardShortcuts()
+            newPage()
         }
-
-        dropDownButton.addMouseListener(DropDownListener(this))
-        addButton.addMouseListener(AddTabListener(this))
-
-        buttonPanel.add(dropDownButton)
-        buttonPanel.add(addButton)
-
-        header.add(tabPanelViewPort, BorderLayout.CENTER)
-        header.add(buttonPanel, BorderLayout.EAST)
-
-        container.add(header, BorderLayout.NORTH)
-        container.add(body, BorderLayout.CENTER)
-
-        setupKeyboardShortcuts()
     }
 
     fun newPage() {
@@ -260,6 +263,9 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
                 tabPanel.remove(pageToRemove.tabComponent)
                 tabPanel.validate()
                 tabPanel.repaint()
+                if (pages.isEmpty()) {
+                    newPage()
+                }
             }
         }
     }
