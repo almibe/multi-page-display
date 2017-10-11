@@ -5,13 +5,13 @@
 package org.almibe.multipage
 
 import java.awt.KeyEventDispatcher
-import javax.swing.ImageIcon
+import javax.swing.Icon
 import javax.swing.JComponent
 
 class PageBuilder {
     private var content: JComponent? = null
     private var title: String? = null
-    private var icon: ImageIcon? = null
+    private var icon: Icon? = null
     private var allowClose: (() -> Boolean)? = null
     private var keyEventDispatcher: KeyEventDispatcher? = null
 
@@ -25,7 +25,7 @@ class PageBuilder {
         return this
     }
 
-    fun setIcon(icon: ImageIcon): PageBuilder {
+    fun setIcon(icon: Icon): PageBuilder {
         this.icon = icon
         return this
     }

@@ -5,13 +5,13 @@
 package org.almibe.multipage
 
 import java.awt.KeyEventDispatcher
-import javax.swing.ImageIcon
+import javax.swing.Icon
 import javax.swing.JComponent
 
 class Page (
     val component: JComponent,
     val title: String,
-    val icon: ImageIcon?,
+    val icon: Icon?,
     val allowClose: (() -> Boolean)?,
     val keyEventDispatcher: KeyEventDispatcher?
 )

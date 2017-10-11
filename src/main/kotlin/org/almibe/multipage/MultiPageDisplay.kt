@@ -156,7 +156,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
-    private fun createCloseImage(): ImageIcon {
+    private fun createCloseImage(): Icon {
         try {
             return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_close_black_18dp.png")))
         } catch (ex: Exception) {
@@ -164,7 +164,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
-    private fun createDownArrowImage(): ImageIcon {
+    private fun createDownArrowImage(): Icon {
         try {
             return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_keyboard_arrow_down_black_24dp.png")))
         } catch (ex: Exception) {
@@ -172,7 +172,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
-    private fun createAddImage(): ImageIcon {
+    private fun createAddImage(): Icon {
         try {
             return ImageIcon(ImageIO.read(this.javaClass.getResourceAsStream("material/ic_add_black_24dp.png")))
         } catch (ex: Exception) {
