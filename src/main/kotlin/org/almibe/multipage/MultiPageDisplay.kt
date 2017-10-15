@@ -16,7 +16,11 @@ import javax.swing.border.EmptyBorder
 import javax.swing.border.LineBorder
 
 class MultiPageDisplay(private val newPageAction: () -> Page) {
-    private data class PageData(val id: String, val page: Page, val tabComponent: JPanel)
+    private data class PageData(val id: String,
+                                val page: Page,
+                                val tabComponent: JPanel,
+                                val label: JLabel,
+                                val icon: JLabel)
 
     private val container = JPanel(BorderLayout())
     private val tabPanel = JPanel()
@@ -80,6 +84,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         } else {
             val id = UUID.randomUUID().toString()
             val pageData = createTabComponent(page, id)
+            page.setMultiPageDisplay(this)
             pages.add(pageData)
             tabPanel.add(pageData.tabComponent)
             body.add(page.component, id)
@@ -90,8 +95,17 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
     }
 
+    fun updatePage(page: Page) {
+        val pageData = pages.first { it.page == page }
+        SwingUtilities.invokeLater {
+            pageData.label.text = page.title
+            pageData.icon.icon = page.icon
+        }
+    }
+
     private fun createTabComponent(page: Page, id: String): PageData {
         val panel = JPanel(BorderLayout())
+        val label = JLabel(page.title)
         val closeButton = JLabel(createCloseImage())
         val closeButtonPanel = JPanel()
         closeButton.border = LineBorder(Color.BLACK, 1)
@@ -106,10 +120,10 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         }
         icon.border = EmptyBorder(10, 10, 10, 10)
         panel.add(icon, BorderLayout.WEST)
-        panel.add(JLabel(page.title), BorderLayout.CENTER)
+        panel.add(label, BorderLayout.CENTER)
         panel.add(closeButtonPanel, BorderLayout.EAST)
 
-        val pageData = PageData(id, page, panel)
+        val pageData = PageData(id, page, panel, label, icon)
 
         closeButton.addMouseListener(object : MouseListener {
             override fun mouseClicked(e: MouseEvent) {

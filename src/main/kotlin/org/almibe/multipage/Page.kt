@@ -7,11 +7,23 @@ package org.almibe.multipage
 import java.awt.KeyEventDispatcher
 import javax.swing.Icon
 import javax.swing.JComponent
+import kotlin.properties.Delegates
 
-class Page (
-    val component: JComponent,
-    val title: String,
-    val icon: Icon?,
-    val allowClose: (() -> Boolean)?,
-    val keyEventDispatcher: KeyEventDispatcher?
-)
+class Page(
+        val component: JComponent,
+        initialTitle: String,
+        initialIcon: Icon?,
+        val allowClose: (() -> Boolean)?,
+        val keyEventDispatcher: KeyEventDispatcher?) {
+    var title: String by Delegates.observable(initialTitle) {
+        _, _, _ -> this.multiPageDisplay?.updatePage(this)
+    }
+    var icon: Icon? by Delegates.observable(initialIcon) {
+        _, _, _ -> this.multiPageDisplay?.updatePage(this)
+    }
+    private var multiPageDisplay: MultiPageDisplay? = null
+
+    fun setMultiPageDisplay(multiPageDisplay: MultiPageDisplay) {
+        this.multiPageDisplay = multiPageDisplay
+    }
+}
