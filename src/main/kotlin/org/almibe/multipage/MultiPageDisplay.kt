@@ -119,12 +119,28 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
                     pages.add(selectedPageIndex, pageData)
                     tabPanel.add(pageData.tabComponent, selectedPageIndex)
                     body.add(page.component, id)
-                    removePage(selectedPage?.page)
+                    removePageAndNotSelect(selectedPage?.page)
                     SwingUtilities.invokeLater {
                         selectPage(page)
                     }
                 } else {
                     addPage(page)
+                }
+            }
+        }
+    }
+
+    private fun removePageAndNotSelect(page: Page?) {
+        if (page != null) {
+            SwingUtilities.invokeLater {
+                val pageToRemove = pages.first { pageData -> pageData.page.component == page.component }
+                pages.remove(pageToRemove)
+                body.remove(pageToRemove.page.component)
+                tabPanel.remove(pageToRemove.tabComponent)
+                tabPanel.validate()
+                tabPanel.repaint()
+                if (pages.isEmpty()) {
+                    newPage()
                 }
             }
         }
@@ -253,7 +269,6 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     }
 
     private fun selectPage(pageData: PageData) {
-        println("in select page ${pageData.page.title}")
         SwingUtilities.invokeLater {
             selectedPage = pageData
             val pageId = pageData.id
