@@ -78,19 +78,21 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     }
 
     fun addPage(page: Page) {
-        val existingPage = pages.find { pageData -> pageData.page == page }
-        if (existingPage != null) {
-            selectPage(existingPage)
-        } else {
-            val id = UUID.randomUUID().toString()
-            val pageData = createTabComponent(page, id)
-            page.setMultiPageDisplay(this)
-            pages.add(pageData)
-            tabPanel.add(pageData.tabComponent)
-            body.add(page.component, id)
+        SwingUtilities.invokeLater {
+            val existingPage = pages.find { pageData -> pageData.page == page }
+            if (existingPage != null) {
+                selectPage(existingPage)
+            } else {
+                val id = UUID.randomUUID().toString()
+                val pageData = createTabComponent(page, id)
+                page.setMultiPageDisplay(this)
+                pages.add(pageData)
+                tabPanel.add(pageData.tabComponent)
+                body.add(page.component, id)
 
-            if (pages.size == 1) {
-                selectPage(pageData)
+                if (pages.size == 1) {
+                    selectPage(pageData)
+                }
             }
         }
     }
@@ -100,6 +102,31 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
         SwingUtilities.invokeLater {
             pageData.label.text = page.title
             pageData.icon.icon = page.icon
+        }
+    }
+
+    fun replaceSelectedPage(page: Page) {
+        SwingUtilities.invokeLater {
+            val existingPage = pages.find { pageData -> pageData.page == page }
+            if (existingPage != null) {
+                selectPage(existingPage)
+            } else {
+                val selectedPageIndex = pages.indexOf(selectedPage)
+                if (selectedPageIndex != -1) {
+                    val id = UUID.randomUUID().toString()
+                    val pageData = createTabComponent(page, id)
+                    page.setMultiPageDisplay(this)
+                    pages.add(selectedPageIndex, pageData)
+                    tabPanel.add(pageData.tabComponent, selectedPageIndex)
+                    body.add(page.component, id)
+                    removePage(selectedPage?.page)
+                    SwingUtilities.invokeLater {
+                        selectPage(page)
+                    }
+                } else {
+                    addPage(page)
+                }
+            }
         }
     }
 
@@ -226,6 +253,7 @@ class MultiPageDisplay(private val newPageAction: () -> Page) {
     }
 
     private fun selectPage(pageData: PageData) {
+        println("in select page ${pageData.page.title}")
         SwingUtilities.invokeLater {
             selectedPage = pageData
             val pageId = pageData.id

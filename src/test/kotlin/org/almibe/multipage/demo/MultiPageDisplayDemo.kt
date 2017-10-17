@@ -55,6 +55,11 @@ object MultiPageDisplayDemo {
             .setIcon(createImageView())
             .setContent(createJavaFXContent()).createPage()
 
+        val replacementTest = PageBuilder()
+            .setTitle("Replacement test")
+            .setIcon(createImageView())
+            .setContent(createReplacementTestComponent(multiPageDisplay)).createPage()
+
         val page2 = PageBuilder()
             .setTitle("Hello No Icon 2")
             .setContent(JTextField("Hello Demo Content 2?")).createPage()
@@ -89,7 +94,7 @@ object MultiPageDisplayDemo {
                 true
             }).createPage()
 
-        Arrays.asList(page, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
+        Arrays.asList(page, replacementTest, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
 
         for (x in 0..19) {
             multiPageDisplay.addPage(createAnonPage())
@@ -127,5 +132,16 @@ object MultiPageDisplayDemo {
 
         root.children.add(text)
         return scene
+    }
+
+    private fun createReplacementTestComponent(multiPageDisplay: MultiPageDisplay): JComponent {
+        val button = JButton("Open new component")
+
+        val replacementPage = PageBuilder().setTitle("New Page").setContent(JLabel("New Page")).createPage()
+
+        button.addActionListener {
+            multiPageDisplay.replaceSelectedPage(replacementPage)
+        }
+        return button
     }
 }
