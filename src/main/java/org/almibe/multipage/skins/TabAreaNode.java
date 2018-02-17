@@ -100,6 +100,6 @@ public class TabAreaNode extends HBox {
     }
 
     public ReadOnlyListProperty<Page> getPages() {
-        return new ReadOnlyListWrapper(pages);
+        return new ReadOnlyListWrapper<>(pages);
     }
 }
