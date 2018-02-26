@@ -14,6 +14,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,6 +25,8 @@ import org.almibe.multipage.Page;
 import org.almibe.multipage.PageBuilder;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class MultiPageDisplayDemo extends Application {
@@ -37,6 +42,10 @@ public class MultiPageDisplayDemo extends Application {
                 .setIcon(createImageView())
                 .setContent(new Label("Hey Content")).createPage())
         );
+
+        Map<KeyCombination, Runnable> accelerators = new HashMap<>();
+        accelerators.put(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN),
+            () -> System.out.println("Hello Accelerator!"));
 
         primaryStage.setScene(new Scene(multiPageDisplay, 700, 450));
         primaryStage.show();
@@ -61,7 +70,8 @@ public class MultiPageDisplayDemo extends Application {
             Page page4 = new PageBuilder()
                 .setTitle(new SimpleStringProperty("Hello Demo 4"))
                 .setIcon(createImageView())
-                .setContent(new Label("Hello Demo Content?!?!!")).createPage();
+                .setContent(new Label("Hello Demo Content With Accelerator?!?!!"))
+                .setAccelerators(accelerators).createPage();
 
             Page page5 = new PageBuilder()
                 .setTitle(new SimpleStringProperty("Prompt to close"))
