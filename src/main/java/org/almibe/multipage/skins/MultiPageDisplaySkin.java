@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -58,6 +59,21 @@ public class MultiPageDisplaySkin extends SkinBase<MultiPageDisplay> {
 
             content.setFitToHeight(true);
             content.setFitToWidth(true);
+
+            content.sceneProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    newValue.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+                        Page page = multiPageDisplay.getSelectedPage();
+                        if (page != null && page.accelerators() != null) {
+                            page.accelerators().forEach((keyCombination, runnable) -> {
+                                if (keyCombination.match(event)) {
+                                    runnable.run();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
 
             tabScrollPane.setStyle("-fx-background: rgb(200,200,200);");
 
