@@ -4,16 +4,11 @@
 
 package org.almibe.multipage.demo
 
-import javafx.embed.swing.JFXPanel
-import javafx.scene.Group
-import javafx.scene.Scene
-import javafx.scene.control.TextArea
 import org.almibe.multipage.MultiPageDisplay
 import org.almibe.multipage.Page
 import org.almibe.multipage.PageBuilder
 import java.awt.KeyEventDispatcher
 import java.awt.event.KeyEvent
-import java.util.*
 import javax.swing.*
 
 object MultiPageDisplayDemo {
@@ -49,11 +44,6 @@ object MultiPageDisplayDemo {
             .setTitle("Hello Demo 1")
             .setIcon(createImageView())
             .setContent(JLabel("Hello Demo Content 2")).createPage()
-
-        val pagefx = PageBuilder()
-            .setTitle("Java FX Example")
-            .setIcon(createImageView())
-            .setContent(createJavaFXContent()).createPage()
 
         val replacementTest = PageBuilder()
             .setTitle("Replacement test")
@@ -94,7 +84,7 @@ object MultiPageDisplayDemo {
                 true
             }).createPage()
 
-        Arrays.asList(page, replacementTest, page2, page3, page4, page5, page6, pagefx).forEach { it -> multiPageDisplay.addPage(it) }
+        listOf(page, replacementTest, page2, page3, page4, page5, page6).forEach { multiPageDisplay.addPage(it) }
 
         for (x in 0..19) {
             multiPageDisplay.addPage(createAnonPage())
@@ -108,30 +98,11 @@ object MultiPageDisplayDemo {
         return PageBuilder()
             .setTitle("Anon " + ++x)
             .setIcon(createImageView())
-            .setContent(JLabel("Hello Demo Content " + x)).createPage()
+            .setContent(JLabel("Hello Demo Content $x")).createPage()
     }
 
     private fun createImageView(): ImageIcon {
         return ImageIcon(MultiPageDisplayDemo::class.java.getResource("page_white_text.png"))
-    }
-
-    private fun createJavaFXContent(): JPanel {
-        val panel = JPanel()
-        val jfxPanel = JFXPanel()
-
-        panel.add(jfxPanel)
-        val scene = createScene()
-        jfxPanel.scene = scene
-        return panel
-    }
-
-    private fun createScene(): Scene {
-        val root = Group()
-        val scene = Scene(root)
-        val text = TextArea("Sample text")
-
-        root.children.add(text)
-        return scene
     }
 
     private fun createReplacementTestComponent(multiPageDisplay: MultiPageDisplay): JComponent {

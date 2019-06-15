@@ -1,11 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.almibe.multipage.demo
 
-import javafx.embed.swing.JFXPanel
-import javafx.scene.Group
-import javafx.scene.Scene
-import javafx.scene.control.TextArea
 import org.almibe.multipage.MultiPageDisplay
-import org.almibe.multipage.Page
 import org.almibe.multipage.PageBuilder
 import javax.swing.*
 
@@ -31,46 +30,15 @@ object EmptyMultiPageDisplayDemo {
     }
 
     private fun create(): MultiPageDisplay {
-        val multiPageDisplay = MultiPageDisplay {
+        return MultiPageDisplay {
             PageBuilder()
                     .setTitle("Hello Demo")
                     .setIcon(createImageView())
                     .setContent(JLabel("Hello Demo Content")).createPage()
         }
-
-        //multiPageDisplay.newPage()
-
-        return multiPageDisplay
-    }
-
-    private var x = 0
-    private fun createAnonPage(): Page {
-        return PageBuilder()
-            .setTitle("Anon " + ++x)
-            .setIcon(createImageView())
-            .setContent(JLabel("Hello Demo Content " + x)).createPage()
     }
 
     private fun createImageView(): ImageIcon {
         return ImageIcon(EmptyMultiPageDisplayDemo::class.java.getResource("page_white_text.png"))
-    }
-
-    private fun createJavaFXContent(): JPanel {
-        val panel = JPanel()
-        val jfxPanel = JFXPanel()
-
-        panel.add(jfxPanel)
-        val scene = createScene()
-        jfxPanel.scene = scene
-        return panel
-    }
-
-    private fun createScene(): Scene {
-        val root = Group()
-        val scene = Scene(root)
-        val text = TextArea("Sample text")
-
-        root.children.add(text)
-        return scene
     }
 }
