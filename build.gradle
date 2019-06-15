@@ -7,7 +7,6 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'org.dm.gradle:gradle-bundle-plugin:0.10.0'
         classpath 'org.almibe:easy-pub-plugin:0.3.0'
     }
 }
@@ -34,9 +33,4 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-osgi-bundle:$kotlin_version"
-}
-
-bundle {
-    instruction 'Import-Package', '*'
-    instruction 'Export-Package', 'org.almibe.multipage.*'
 }
