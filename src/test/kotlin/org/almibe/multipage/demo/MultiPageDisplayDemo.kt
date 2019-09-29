@@ -12,9 +12,7 @@ import java.awt.event.KeyEvent
 import javax.swing.*
 
 object MultiPageDisplayDemo {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
+    fun main() {
         SwingUtilities.invokeLater {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())

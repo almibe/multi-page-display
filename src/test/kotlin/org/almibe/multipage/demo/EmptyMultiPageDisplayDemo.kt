@@ -9,9 +9,7 @@ import org.almibe.multipage.PageBuilder
 import javax.swing.*
 
 object EmptyMultiPageDisplayDemo {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
+    fun main() {
         SwingUtilities.invokeLater {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())

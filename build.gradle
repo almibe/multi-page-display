@@ -1,29 +1,11 @@
-buildscript {
-    ext.kotlin_version = '1.3.31'
-
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'org.almibe:easy-pub-plugin:0.3.0'
-    }
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.40'
+    id 'maven'
 }
+//apply plugin: 'org.almibe.easypubplugin'
 
-apply plugin: 'kotlin'
-apply plugin: 'org.almibe.easypubplugin'
-apply plugin: 'maven'
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
-version = '0.4.0-SNAPSHOT'
-group = 'org.almibe'
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
+version '0.4.0-SNAPSHOT'
+group 'org.almibe'
 
 repositories {
     mavenLocal()
@@ -31,5 +13,5 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-osgi-bundle:$kotlin_version"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.3.40'
 }
