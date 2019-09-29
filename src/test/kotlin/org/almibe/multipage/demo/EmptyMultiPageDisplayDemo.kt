@@ -8,35 +8,35 @@ import org.almibe.multipage.MultiPageDisplay
 import org.almibe.multipage.PageBuilder
 import javax.swing.*
 
-object EmptyMultiPageDisplayDemo {
-    fun main() {
-        SwingUtilities.invokeLater {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-
-            val frame = JFrame("Demo")
-            frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-
-            frame.contentPane.add(create().component)
-            frame.pack()
-            frame.isVisible = true
-            frame.setSize(1000, 400)
+fun main() {
+    SwingUtilities.invokeLater {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
-    }
 
-    private fun create(): MultiPageDisplay {
-        return MultiPageDisplay {
-            PageBuilder()
-                    .setTitle("Hello Demo")
-                    .setIcon(createImageView())
-                    .setContent(JLabel("Hello Demo Content")).createPage()
-        }
-    }
+        val frame = JFrame("Demo")
+        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
-    private fun createImageView(): ImageIcon {
-        return ImageIcon(EmptyMultiPageDisplayDemo::class.java.getResource("page_white_text.png"))
+        frame.contentPane.add(create().component)
+        frame.pack()
+        frame.isVisible = true
+        frame.setSize(1000, 400)
     }
 }
+
+private fun create(): MultiPageDisplay {
+    return MultiPageDisplay {
+        PageBuilder()
+                .setTitle("Hello Demo")
+                .setIcon(createImageView())
+                .setContent(JLabel("Hello Demo Content")).createPage()
+    }
+}
+
+private fun createImageView(): ImageIcon {
+    return ImageIcon(EmptyMultiPageDisplayDemo::class.java.getResource("page_white_text.png"))
+}
+
+object EmptyMultiPageDisplayDemo
